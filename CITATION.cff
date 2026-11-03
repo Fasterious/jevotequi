@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "Si vous utilisez ces données ou ce code, merci de les citer ainsi."
+title: "Je vote qui ? Les votes des députés à l'Assemblée nationale depuis 2022"
+type: software
+version: "1.0.0"
+date-released: "2026-11-03"
+license: AGPL-3.0-or-later
+authors:
+  - name: "Les contributeurs du projet « Je vote qui ? »"
+keywords:
+  - Assemblée nationale
+  - scrutins publics
+  - données ouvertes
+  - science ouverte
+references:
+  - type: data
+    title: "Données ouvertes de l'Assemblée nationale"
+    url: "https://data.assemblee-nationale.fr/"
+    license: "Licence Ouverte 2.0 (Etalab)"

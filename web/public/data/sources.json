@@ -1,0 +1,58 @@
+{
+ "amo30": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+  "size": 13721016,
+  "sha256": "41561aa52d8f46176abaad1745301b79d3d5303378080776417e658174b65e94",
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": null
+ },
+ "scrutins16": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/scrutins/Scrutins.json.zip",
+  "size": 10107912,
+  "sha256": "adc5e57d3ad5904fd11e176b531b3d525d4ecfdf78db9587f93a14452601126b",
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": null
+ },
+ "scrutins17": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip",
+  "size": 29637633,
+  "sha256": "9bdefaa87a6cd5d513ade487aa989896ca58b7edfc6bebe4b300c0b0223a9684",
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": null
+ },
+ "dossiers16": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+  "size": 9085119,
+  "sha256": "6a2369c01a44711362b7c9a79ed13c001400cbb00dc6bade7b05499d2e6d478e",
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": null
+ },
+ "dossiers17": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+  "size": 11134006,
+  "sha256": "e87a01d9eb433399bfbd4843b486ee2173d77fdbe04831f66b1e81b48910c92b",
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": null
+ },
+ "amendements16": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/amendements_div_legis/Amendements.xml.zip",
+  "size": null,
+  "sha256": null,
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": "IncompleteRead(0 bytes read, 65536 more expected)"
+ },
+ "amendements17": {
+  "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip",
+  "size": 351901725,
+  "sha256": "7177045562aed7680bff4b43d81613aedef9d1eb867ecbffaf2ea3bb84579055",
+  "last_modified": null,
+  "fetched_at": null,
+  "unavailable": null
+ }
+}

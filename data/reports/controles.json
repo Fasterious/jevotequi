@@ -1,0 +1,254 @@
+[
+ {
+  "id": "E1",
+  "etape": "extraction",
+  "titre": "Numérotation des scrutins continue (aucun scrutin manquant)",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "E2",
+  "etape": "extraction",
+  "titre": "Aucun député compté deux fois dans un même scrutin",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": "2021657 votes nominatifs"
+ },
+ {
+  "id": "E3",
+  "etape": "extraction",
+  "titre": "Tous les votants sont des députés connus",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "E4",
+  "etape": "extraction",
+  "titre": "Décompte nominatif = décompte publié, groupe par groupe",
+  "statut": "alerte",
+  "valeur": 4,
+  "attendu": "≤ 20 écarts connus",
+  "detail": "VTANR5L16V1927 PO800502; VTANR5L16V1929 PO800502; VTANR5L16V1930 PO800502; VTANR5L16V1948 PO800502 (la liste nominative fait foi)"
+ },
+ {
+  "id": "E5",
+  "etape": "extraction",
+  "titre": "Somme des votes nominatifs = résultat officiel du scrutin",
+  "statut": "alerte",
+  "valeur": 4,
+  "attendu": "≤ 20",
+  "detail": "VTANR5L16V1927; VTANR5L16V1929; VTANR5L16V1930; VTANR5L16V1948"
+ },
+ {
+  "id": "E6",
+  "etape": "extraction",
+  "titre": "Groupes publiés sans identifiant : tous retrouvés",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": "146 groupes corrigés (identifiant « PO0 » dans la source)"
+ },
+ {
+  "id": "E7",
+  "etape": "extraction",
+  "titre": "Jamais plus de 577 députés en fonction à une même date",
+  "statut": "ok",
+  "valeur": 577,
+  "attendu": "≤ 577",
+  "detail": "maximum le 2022-07-11 (dates de reprise de fonction des anciens ministres prises en compte)"
+ },
+ {
+  "id": "L1",
+  "etape": "rapprochement",
+  "titre": "Scrutins rattachés à un dossier législatif",
+  "statut": "ok",
+  "valeur": "99.5%",
+  "attendu": "≥ 95 %",
+  "detail": "67 scrutins sans dossier (motions de censure spontanées, déclarations…)"
+ },
+ {
+  "id": "L2-16",
+  "etape": "rapprochement",
+  "titre": "Contenu des amendements retrouvé (16e législature)",
+  "statut": "ok",
+  "valeur": "99.2%",
+  "attendu": "≥ 90 %",
+  "detail": "3147 sur 3173 scrutins d'amendement"
+ },
+ {
+  "id": "L2-17",
+  "etape": "rapprochement",
+  "titre": "Contenu des amendements retrouvé (17e législature)",
+  "statut": "ok",
+  "valeur": "99.7%",
+  "attendu": "≥ 90 %",
+  "detail": "8238 sur 8263 scrutins d'amendement"
+ },
+ {
+  "id": "L3",
+  "etape": "rapprochement",
+  "titre": "Type de vote reconnu",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": "≤ 0,1 % « autre »",
+  "detail": ""
+ },
+ {
+  "id": "L4",
+  "etape": "rapprochement",
+  "titre": "Thème attribué",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": "≤ 1 % « autres »",
+  "detail": ""
+ },
+ {
+  "id": "L5",
+  "etape": "rapprochement",
+  "titre": "Numéro de l'amendement retrouvé = numéro cité par le scrutin",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "L6",
+  "etape": "rapprochement",
+  "titre": "Amendement affiché et scrutin rattachés au même texte",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": "corrections appliquées — amendement retrouvé grâce aux autres scrutins du même texte : 1; dossier remplacé : 4; dossier retiré : 3; amendement d'un autre texte (même séance, même numéro) : 6"
+ },
+ {
+  "id": "L7",
+  "etape": "rapprochement",
+  "titre": "Rattachements par la séance confirmés (intitulé ou autres scrutins du même texte)",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "L8",
+  "etape": "rapprochement",
+  "titre": "Auteur de l'amendement affiché = député cité par le scrutin (ou cosignataire)",
+  "statut": "ok",
+  "valeur": "0.19%",
+  "attendu": "≤ 0,5 %",
+  "detail": "10917 confirmés sur 10938 ; écarts connus : l'intitulé cite parfois le député qui a défendu l'amendement plutôt que son premier signataire (numéro, séance, texte et sort concordent) — VTANR5L16V58, VTANR5L16V473, VTANR5L16V1058, VTANR5L16V1067, VTANR5L16V1072, VTANR5L16V1077"
+ },
+ {
+  "id": "K1",
+  "etape": "calcul",
+  "titre": "Valeurs de référence vérifiées sur le site de l'Assemblée",
+  "statut": "ok",
+  "valeur": "8/8",
+  "attendu": "8/8",
+  "detail": ""
+ },
+ {
+  "id": "K2",
+  "etape": "calcul",
+  "titre": "Positions de groupe valides (pour, contre, abstention, partagé, aucun vote)",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "K3",
+  "etape": "calcul",
+  "titre": "Écart entre nos positions recalculées et le champ « position majoritaire » publié",
+  "statut": "alerte",
+  "valeur": 3216,
+  "attendu": "",
+  "detail": "Le champ publié n'est pas utilisé : il vaut « pour » par défaut et contredit parfois les décomptes."
+ },
+ {
+  "id": "K4",
+  "etape": "calcul",
+  "titre": "Chaque député vote au plus autant de fois que de scrutins tenus pendant son mandat",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "P1",
+  "etape": "publication",
+  "titre": "Chaque fichier publié pèse moins de 15 Mo",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "Q1",
+  "etape": "quiz",
+  "titre": "Chaque question renvoie à un scrutin public existant",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "Q2",
+  "etape": "quiz",
+  "titre": "Chaque question départage : au moins un groupe pour et un groupe contre",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "Q3",
+  "etape": "quiz",
+  "titre": "Formulation : question de 160 caractères au plus, contexte présent, aucun nom de parti",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "Q4",
+  "etape": "quiz",
+  "titre": "Amendements de suppression : sens de la question explicite",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ },
+ {
+  "id": "Q5",
+  "etape": "quiz",
+  "titre": "Tous les thèmes sont couverts",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": "37 questions, 15 thèmes"
+ },
+ {
+  "id": "Q6",
+  "etape": "quiz",
+  "titre": "Équilibre : aucun groupe toujours « pour » ou toujours « contre » (entre 20 % et 80 %)",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": "GDR 53%, LFI 49%, ECO 59%, SOC 65%, LIOT 76%, DEM 63%, REN 60%, HOR 54%, LR 64%, UDR 56%, RN 61%"
+ },
+ {
+  "id": "Q7",
+  "etape": "quiz",
+  "titre": "Pas deux questions sur le même scrutin",
+  "statut": "ok",
+  "valeur": 0,
+  "attendu": 0,
+  "detail": ""
+ }
+]

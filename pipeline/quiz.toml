@@ -1,0 +1,325 @@
+# Quiz « Et toi, tu aurais voté quoi ? »
+#
+# Chaque question renvoie à UN scrutin public de l'Assemblée nationale. Les positions des groupes
+# ne sont jamais saisies ici : elles sont calculées à partir des votes nominatifs, comme partout
+# sur le site. Ce fichier ne contient que la formulation, relue et discutable.
+#
+# Règles de rédaction (METHODOLOGIE.md § 14) :
+#  1. Une question = un scrutin public, choisi parmi les votes disputés (au moins un groupe pour
+#     et un groupe contre), de préférence décisifs (vote sur l'ensemble d'un texte, article clé).
+#  2. La question décrit la mesure votée, en mots simples, en 160 caractères au plus, et se
+#     termine par « ? ».
+#  3. Aucun nom de parti, de groupe ou de député dans la question ni dans le contexte : l'origine
+#     du texte est montrée après la réponse.
+#  4. Pas de jugement de valeur ; pas de chiffre qui ne figure pas dans le texte voté.
+#  5. « Pour » = voter pour la mesure décrite. Quand le scrutin porte sur un amendement de
+#     suppression, la question décrit la mesure elle-même et porte `sens = "inverse"`.
+#  6. Le contexte (300 caractères au plus) donne la date, le texte et ce qui change ; il ne dit
+#     jamais le résultat ni le vote des groupes (révélés après la réponse).
+#  7. `theme` ne sert qu'à corriger le thème automatique quand la question porte sur un autre
+#     aspect du texte (justification dans `note`).
+#  8. `statut` : « proposé » tant que la formulation n'a pas été relue par le comité éditorial,
+#     « relu » ensuite, « retiré » pour ne plus la proposer.
+#
+# Ne jamais réordonner ni supprimer une question : les liens de résultats partagés reposent sur
+# leur rang dans ce fichier. Ajouter les nouvelles à la fin ; retirer = statut « retiré ».
+#
+# Les contrôles Q1 à Q7 (pipeline/s6_quiz.py) vérifient ces règles à chaque exécution.
+
+version = "1.0.0"
+
+# ---------------------------------------------------------------- Budget & impôts
+
+[[question]]
+id = "taxe-zucman"
+scrutin = "VTANR5L17V3300"
+question = "Faut-il un impôt minimum de 2 % par an sur les patrimoines de plus de 100 millions d'euros ?"
+contexte = "Budget 2026, octobre 2025. Inspiré des travaux de l'économiste Gabriel Zucman : les plus grandes fortunes paieraient chaque année, tous impôts confondus, au moins 2 % de leur patrimoine."
+statut = "proposé"
+
+[[question]]
+id = "tva-energie"
+scrutin = "VTANR5L17V4038"
+question = "Faut-il baisser la TVA de 20 % à 5,5 % sur l'électricité, le gaz, le fioul et les carburants ?"
+contexte = "Budget 2026, novembre 2025. L'énergie serait taxée comme un produit de première nécessité ; la perte de recettes serait compensée par d'autres taxes."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Retraites & protection sociale
+
+[[question]]
+id = "superprofits"
+scrutin = "VTANR5L16V1061"
+question = "Faut-il taxer les « superprofits » des grandes entreprises pour financer les retraites ?"
+contexte = "Réforme des retraites, février 2023. Contribution sur les bénéfices des entreprises de plus de 750 millions d'euros de chiffre d'affaires, quand ils dépassent de plus de 25 % leur moyenne de 2017 à 2019."
+statut = "proposé"
+
+[[question]]
+id = "suspension-retraites"
+scrutin = "VTANR5L17V3684"
+question = "Faut-il suspendre jusqu'en 2028 la réforme des retraites de 2023 (recul de l'âge de départ, hausse de la durée de cotisation) ?"
+contexte = "Budget de la Sécurité sociale 2026, novembre 2025. Pendant la suspension, l'âge légal et le nombre de trimestres requis cessent d'augmenter d'une génération à l'autre."
+statut = "proposé"
+
+[[question]]
+id = "gel-pensions"
+scrutin = "VTANR5L17V3685"
+question = "Faut-il supprimer le gel des pensions de retraite et des prestations sociales prévu pour 2026 ?"
+contexte = "Budget de la Sécurité sociale 2026, novembre 2025. Le texte prévoyait de ne pas revaloriser en 2026 les retraites et les prestations sociales (« année blanche »)."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Santé
+
+[[question]]
+id = "vaccin-soignants"
+scrutin = "VTANR5L16V1462"
+question = "Faut-il supprimer l'obligation de vaccination contre le Covid-19 des soignants et réintégrer ceux qui avaient été suspendus ?"
+contexte = "Mai 2023. L'obligation visait les professionnels des secteurs médical, paramédical et de l'aide à la personne ; les non-vaccinés avaient été suspendus."
+statut = "proposé"
+
+[[question]]
+id = "installation-medecins"
+scrutin = "VTANR5L16V1812"
+question = "Faut-il réguler l'installation des médecins pour les orienter vers les territoires qui en manquent ?"
+contexte = "Juin 2023. Proposition d'un groupe de travail de députés de plusieurs bords : installation libre là où les médecins manquent ; ailleurs, seulement pour remplacer un confrère qui cesse son activité."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Société & droits
+
+[[question]]
+id = "aide-a-mourir"
+scrutin = "VTANR5L17V8280"
+question = "Faut-il créer un droit à l'aide à mourir pour les adultes atteints d'une maladie grave et incurable qui le demandent ?"
+contexte = "Juillet 2026, adoption définitive par l'Assemblée. Conditions strictes : maladie grave et incurable en phase avancée, souffrances impossibles à soulager, volonté libre et éclairée."
+statut = "proposé"
+
+[[question]]
+id = "reseaux-sociaux-15-ans"
+scrutin = "VTANR5L17V8431"
+question = "Faut-il interdire les réseaux sociaux aux moins de 15 ans ?"
+contexte = "Proposition de loi sur la protection des mineurs face aux réseaux sociaux, version finale, juillet 2026."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Travail & emploi
+
+[[question]]
+id = "rsa-15-heures"
+scrutin = "VTANR5L16V2965"
+question = "Faut-il demander aux allocataires du RSA au moins 15 heures d'activité par semaine (formation, insertion) ?"
+contexte = "Loi « pour le plein emploi », version finale, novembre 2023. Inscription automatique à France Travail et contrat d'engagement avec au moins 15 heures d'activité hebdomadaire, sauf exceptions."
+statut = "proposé"
+
+[[question]]
+id = "assurance-chomage"
+scrutin = "VTANR5L16V567"
+question = "Faut-il durcir l'assurance chômage quand l'emploi va bien et supprimer les allocations après deux refus de CDI ?"
+contexte = "Loi « marché du travail », version finale, novembre 2022. La durée d'indemnisation peut varier selon la conjoncture ; un abandon de poste est assimilé à une démission."
+statut = "proposé"
+
+[[question]]
+id = "smic-1500"
+scrutin = "VTANR5L16V44"
+question = "Faut-il porter le SMIC à 1 500 € net par mois ?"
+contexte = "Loi « pouvoir d'achat », juillet 2022. Le salaire minimum aurait été porté à 1 923 € brut par mois au 1er août 2022."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Immigration
+
+[[question]]
+id = "loi-immigration-2023"
+scrutin = "VTANR5L16V3213"
+question = "Faut-il durcir la politique d'immigration comme le prévoyait la loi votée en décembre 2023 ?"
+contexte = "Version finale : délai de résidence avant certaines aides sociales pour les étrangers non européens, regroupement familial plus strict, expulsions facilitées, régularisation au cas par cas dans les métiers en tension. Une partie a ensuite été censurée."
+statut = "proposé"
+
+[[question]]
+id = "mayotte-droit-du-sol"
+scrutin = "VTANR5L17V1308"
+question = "Faut-il restreindre davantage le droit du sol à Mayotte ?"
+contexte = "Avril 2025, version finale. Les conditions de séjour régulier exigées des parents d'un enfant né à Mayotte, déjà plus strictes qu'ailleurs en France, sont renforcées."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Sécurité & justice
+
+[[question]]
+id = "justice-mineurs"
+scrutin = "VTANR5L17V1624"
+question = "Faut-il durcir la justice des mineurs (comparution immédiate possible dès 16 ans, atténuation de peine liée à l'âge moins systématique) ?"
+contexte = "Version finale, mai 2025. Le texte renforce aussi la responsabilité des parents. Une partie a ensuite été censurée par le Conseil constitutionnel."
+statut = "proposé"
+
+[[question]]
+id = "legitime-defense"
+scrutin = "VTANR5L17V7987"
+question = "Faut-il présumer que les policiers et gendarmes qui font usage de la force en service agissent en légitime défense ?"
+contexte = "Juillet 2026, première lecture. Ce serait alors à l'accusation de prouver que l'usage de la force n'était pas justifié."
+statut = "proposé"
+
+[[question]]
+id = "narcotrafic"
+scrutin = "VTANR5L17V1473"
+question = "Faut-il créer un parquet national spécialisé et des prisons de haute sécurité contre le narcotrafic ?"
+contexte = "Version finale, avril 2025. Le texte élargit aussi les techniques d'enquête et renforce les sanctions contre les réseaux de trafic de drogue."
+statut = "proposé"
+
+[[question]]
+id = "videosurveillance-algorithmique"
+scrutin = "VTANR5L16V1409"
+question = "Faut-il expérimenter des caméras de surveillance dont les images sont analysées par des logiciels lors de grands événements ?"
+contexte = "Loi sur les Jeux olympiques de 2024, version finale, avril 2023. Les logiciels signalent des situations à risque (mouvements de foule, objets abandonnés…) ; expérimentation jusqu'en mars 2025."
+theme = "securite"
+note = "Le texte (Jeux olympiques) est classé en éducation, culture et sport ; la question porte sur sa mesure de sécurité."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Environnement, énergie & transports
+
+[[question]]
+id = "nucleaire"
+scrutin = "VTANR5L16V1533"
+question = "Faut-il accélérer la construction de nouveaux réacteurs nucléaires ?"
+contexte = "Version finale, mai 2023. Procédures simplifiées près des centrales existantes ; l'objectif de ramener la part du nucléaire à 50 % de l'électricité est supprimé."
+statut = "proposé"
+
+[[question]]
+id = "renouvelables"
+scrutin = "VTANR5L16V897"
+question = "Faut-il accélérer l'installation d'éoliennes et de panneaux solaires ?"
+contexte = "Version finale, janvier 2023. Procédures simplifiées et « zones d'accélération » définies avec les communes."
+statut = "proposé"
+
+[[question]]
+id = "zfe"
+scrutin = "VTANR5L17V8613"
+sens = "inverse"
+question = "Faut-il supprimer les zones à faibles émissions (ZFE), qui limitent la circulation des véhicules les plus polluants en ville ?"
+contexte = "Octobre 2026. Le vote portait sur un amendement qui voulait conserver les ZFE : voter contre cet amendement, c'était soutenir leur suppression."
+note = "Amendement de suppression de l'article d'abrogation : « Pour » à la question = « Contre » au scrutin."
+statut = "proposé"
+
+[[question]]
+id = "pfas"
+scrutin = "VTANR5L17V852"
+question = "Faut-il interdire les PFAS (« polluants éternels ») dans les cosmétiques, les farts de ski et les vêtements ?"
+contexte = "Février 2025, version adoptée en deuxième lecture. Interdiction progressive de ces substances chimiques très persistantes et redevance sur leurs rejets industriels."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Agriculture & alimentation
+
+[[question]]
+id = "acetamipride"
+scrutin = "VTANR5L17V2957"
+question = "Faut-il réautoriser, par dérogation, l'acétamipride, un insecticide néonicotinoïde interdit en France depuis 2018 ?"
+contexte = "Loi sur les contraintes du métier d'agriculteur, version finale, juillet 2025. Elle facilite aussi l'agrandissement des élevages et les réserves d'eau. La réautorisation a ensuite été censurée."
+statut = "proposé"
+
+[[question]]
+id = "prix-plancher"
+scrutin = "VTANR5L16V3653"
+question = "Faut-il garantir aux agriculteurs des prix minimums (« prix planchers ») pour leurs produits ?"
+contexte = "Avril 2024, première lecture. Proposition de loi visant à garantir un revenu digne aux agriculteurs, avec des prix d'achat minimums fixés par filière."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Logement & territoires
+
+[[question]]
+id = "squat"
+scrutin = "VTANR5L16V1361"
+question = "Faut-il punir plus sévèrement le squat et accélérer les expulsions en cas de loyers impayés ?"
+contexte = "Avril 2023, deuxième lecture. Jusqu'à trois ans de prison pour l'occupation illicite d'un logement ; procédures d'expulsion raccourcies."
+statut = "proposé"
+
+[[question]]
+id = "locations-touristiques"
+scrutin = "VTANR5L17V289"
+question = "Faut-il réduire l'avantage fiscal des locations touristiques (type Airbnb) et permettre aux maires d'en limiter le nombre ?"
+contexte = "Version finale, novembre 2024. Les communes peuvent aussi limiter à 90 jours par an la location de résidences principales."
+statut = "proposé"
+
+[[question]]
+id = "encadrement-loyers"
+scrutin = "VTANR5L17V4740"
+question = "Faut-il rendre permanent l'encadrement des loyers et l'ouvrir à davantage de villes ?"
+contexte = "Décembre 2025, première lecture. Expérimenté depuis 2019 dans quelques villes (Paris, Lille, Lyon…), le plafonnement des loyers deviendrait durable."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Outre-mer
+
+[[question]]
+id = "nouvelle-caledonie"
+scrutin = "VTANR5L16V3725"
+question = "Faut-il ouvrir le vote aux élections provinciales de Nouvelle-Calédonie aux personnes installées depuis au moins 10 ans ?"
+contexte = "Révision de la Constitution votée en mai 2024 (« dégel du corps électoral »), pendant des émeutes ; la réforme n'a finalement pas été menée à son terme."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Économie & entreprises
+
+[[question]]
+id = "arcelormittal"
+scrutin = "VTANR5L17V7380"
+question = "Faut-il nationaliser ArcelorMittal France, principal producteur d'acier du pays ?"
+contexte = "Proposition de loi, deuxième lecture, juin 2026 : l'État prendrait le contrôle des activités françaises du groupe sidérurgique."
+statut = "proposé"
+
+[[question]]
+id = "edf"
+scrutin = "VTANR5L16V1482"
+question = "Faut-il protéger EDF d'un découpage et étendre le tarif réglementé de l'électricité aux petites entreprises et aux communes ?"
+contexte = "Proposition de loi, deuxième lecture, mai 2023, pendant que l'État reprenait la totalité du capital d'EDF."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Éducation, culture & sport
+
+[[question]]
+id = "repas-1-euro"
+scrutin = "VTANR5L16V931"
+question = "Faut-il garantir à tous les étudiants deux repas par jour à 1 € maximum au restaurant universitaire ?"
+contexte = "Février 2023. Proposition de loi portant sur l'ensemble des restaurants et points de vente gérés ou agréés par les Crous."
+note = "La commission avait restreint le texte aux étudiants boursiers et précaires ; deux amendements adoptés en séance (scrutins 16/925 et 16/930) ont rétabli le repas à 1 € pour tous avant le vote sur l'ensemble."
+statut = "proposé"
+
+[[question]]
+id = "aesh-fonctionnaires"
+scrutin = "VTANR5L17V9203"
+question = "Faut-il faire des accompagnants d'élèves en situation de handicap (AESH) des fonctionnaires ?"
+contexte = "Octobre 2026, première lecture : création d'un corps de fonctionnaires de catégorie B pour ces personnels aujourd'hui contractuels."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Institutions & vie démocratique
+
+[[question]]
+id = "ineligibilite"
+scrutin = "VTANR5L17V2708"
+sens = "inverse"
+question = "Faut-il qu'une peine d'inéligibilité ne s'applique qu'une fois la condamnation définitive, et non dès le premier jugement ?"
+contexte = "Juin 2025. Proposition de loi supprimant l'« exécution provisoire » des peines d'inéligibilité. Le vote portait sur un amendement supprimant cette mesure : voter contre cet amendement, c'était la soutenir."
+note = "Amendement de suppression de l'article unique : « Pour » à la question = « Contre » au scrutin."
+statut = "proposé"
+
+[[question]]
+id = "corse-autonome"
+scrutin = "VTANR5L17V7454"
+question = "Faut-il inscrire l'autonomie de la Corse dans la Constitution ?"
+contexte = "Projet de révision constitutionnelle, première lecture, juin 2026 : la collectivité de Corse pourrait adapter certaines lois à ses spécificités."
+statut = "proposé"
+
+[[question]]
+id = "parite-petites-communes"
+scrutin = "VTANR5L17V1303"
+question = "Faut-il imposer des listes paritaires femmes-hommes aux élections municipales dans les communes de moins de 1 000 habitants ?"
+contexte = "Deuxième lecture, avril 2025. Le scrutin de liste paritaire, déjà appliqué dans les autres communes, est étendu aux petites communes."
+statut = "proposé"
+
+# ---------------------------------------------------------------- Défense & international
+
+[[question]]
+id = "accord-ukraine"
+scrutin = "VTANR5L16V3461"
+question = "Faut-il approuver l'accord de sécurité conclu entre la France et l'Ukraine en février 2024 ?"
+contexte = "Vote demandé par le gouvernement en mars 2024. L'accord prévoit notamment jusqu'à 3 milliards d'euros d'aide militaire supplémentaire pour 2024."
+statut = "proposé"
+
+[[question]]
+id = "programmation-militaire"
+scrutin = "VTANR5L16V1778"
+question = "Faut-il consacrer 413 milliards d'euros aux armées de 2024 à 2030 ?"
+contexte = "Loi de programmation militaire, première lecture, juin 2023 : forte hausse du budget de la défense sur sept ans."
+statut = "proposé"

@@ -1,0 +1,23 @@
+{
+  "name": "jevotequi",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Je vote qui ? Les votes réels des députés à l'Assemblée nationale depuis 2022, pour décider en connaissance de cause.",
+  "scripts": {
+    "data": "python3 -I ../pipeline/run.py all",
+    "build": "vite build && node scripts/postbuild.mjs",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --port 4173",
+    "data:essai": "python3 -I ../pipeline/run.py all --sample 200"
+  },
+  "devDependencies": {
+    "@types/d3": "7.4.3",
+    "@types/react": "18.3.23",
+    "@types/react-dom": "18.3.7",
+    "typescript": "5.8.3",
+    "vite": "7.3.7",
+    "vite-plugin-singlefile": "2.2.1"
+  },
+  "license": "AGPL-3.0-or-later"
+}

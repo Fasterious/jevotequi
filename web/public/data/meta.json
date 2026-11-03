@@ -1,0 +1,595 @@
+{
+ "generated": "2026-11-03T11:32:07Z",
+ "methodVersion": "1.1.0",
+ "sources": {
+  "amo30": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
+  "scrutins16": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/scrutins/Scrutins.json.zip",
+  "scrutins17": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip",
+  "dossiers16": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+  "dossiers17": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
+  "amendements16": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/amendements_div_legis/Amendements.xml.zip",
+  "amendements17": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip"
+ },
+ "legislatures": [
+  {
+   "num": 16,
+   "first": "2022-07-11",
+   "last": "2024-06-07",
+   "n": 4105,
+   "deputies": 617,
+   "chunk": 125,
+   "voteChunk": 40,
+   "map": {
+    "n": 591,
+    "explained": [
+     0.405,
+     0.132
+    ],
+    "minVotes": 100,
+    "scrutins": 3757
+   }
+  },
+  {
+   "num": 17,
+   "first": "2024-10-08",
+   "last": "2026-11-02",
+   "n": 9578,
+   "deputies": 652,
+   "chunk": 125,
+   "voteChunk": 40,
+   "map": {
+    "n": 633,
+    "explained": [
+     0.349,
+     0.096
+    ],
+    "minVotes": 100,
+    "scrutins": 9121
+   }
+  }
+ ],
+ "families": [
+  {
+   "id": "GDR",
+   "short": "GDR",
+   "name": "Gauche démocrate et républicaine",
+   "desc": "Communistes et députés ultramarins de gauche",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800502",
+     "leg": 16,
+     "abbr": "GDR - NUPES",
+     "label": "Gauche démocrate et républicaine - NUPES",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#991414"
+    },
+    {
+     "uid": "PO845514",
+     "leg": 17,
+     "abbr": "GDR",
+     "label": "Gauche Démocrate et Républicaine",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#830E21"
+    }
+   ]
+  },
+  {
+   "id": "LFI",
+   "short": "LFI",
+   "name": "La France insoumise",
+   "desc": "Groupe LFI-NUPES (2022-2024) puis LFI-NFP",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800490",
+     "leg": 16,
+     "abbr": "LFI - NUPES",
+     "label": "La France insoumise - Nouvelle Union Populaire écologique et sociale",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#E42313"
+    },
+    {
+     "uid": "PO845413",
+     "leg": 17,
+     "abbr": "LFI-NFP",
+     "label": "La France insoumise - Nouveau Front Populaire",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#C00D0D"
+    }
+   ]
+  },
+  {
+   "id": "ECO",
+   "short": "Écologistes",
+   "name": "Écologistes",
+   "desc": "Groupe Écologiste-NUPES puis Écologiste et Social",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800526",
+     "leg": 16,
+     "abbr": "Ecolo - NUPES",
+     "label": "Écologiste - NUPES",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#77AA79"
+    },
+    {
+     "uid": "PO845439",
+     "leg": 17,
+     "abbr": "EcoS",
+     "label": "Écologiste et Social",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#77AA79"
+    }
+   ]
+  },
+  {
+   "id": "SOC",
+   "short": "PS",
+   "name": "Socialistes",
+   "desc": "Groupe Socialistes et apparentés",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800496",
+     "leg": 16,
+     "abbr": "SOC",
+     "label": "Socialistes et apparentés (membre de l'intergroupe NUPES)",
+     "from": "2022-06-28",
+     "to": "2023-10-18",
+     "color": "#DF84B5"
+    },
+    {
+     "uid": "PO830170",
+     "leg": 16,
+     "abbr": "SOC",
+     "label": "Socialistes et apparentés",
+     "from": "2023-10-19",
+     "to": "2024-06-09",
+     "color": "#DF84B5"
+    },
+    {
+     "uid": "PO845419",
+     "leg": 17,
+     "abbr": "SOC",
+     "label": "Socialistes et apparentés",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#F5B4CE"
+    }
+   ]
+  },
+  {
+   "id": "LIOT",
+   "short": "LIOT",
+   "name": "LIOT",
+   "desc": "Libertés, Indépendants, Outre-mer et Territoires (centristes, régionalistes, ultramarins)",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800532",
+     "leg": 16,
+     "abbr": "LIOT",
+     "label": "Libertés, Indépendants, Outre-mer et Territoires",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#F8D434"
+    },
+    {
+     "uid": "PO845485",
+     "leg": 17,
+     "abbr": "LIOT",
+     "label": "Libertés, Indépendants, Outre-mer et Territoires",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#FFD96F"
+    }
+   ]
+  },
+  {
+   "id": "DEM",
+   "short": "MoDem",
+   "name": "MoDem",
+   "desc": "Groupe Démocrate (MoDem et Indépendants) puis Les Démocrates",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800484",
+     "leg": 16,
+     "abbr": "Dem",
+     "label": "Démocrate (MoDem et Indépendants)",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#CE5215"
+    },
+    {
+     "uid": "PO845454",
+     "leg": 17,
+     "abbr": "Dem",
+     "label": "Les Démocrates",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#F07E26"
+    }
+   ]
+  },
+  {
+   "id": "REN",
+   "short": "Renaissance",
+   "name": "Renaissance",
+   "desc": "Parti d'Emmanuel Macron : groupe Renaissance (2022-2024) puis Ensemble pour la République (EPR)",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800538",
+     "leg": 16,
+     "abbr": "RE",
+     "label": "Renaissance",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#61468F"
+    },
+    {
+     "uid": "PO845407",
+     "leg": 17,
+     "abbr": "EPR",
+     "label": "Ensemble pour la République",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#7B4591"
+    }
+   ]
+  },
+  {
+   "id": "HOR",
+   "short": "Horizons",
+   "name": "Horizons",
+   "desc": "Parti d'Édouard Philippe : Horizons et apparentés puis Horizons & Indépendants",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800514",
+     "leg": 16,
+     "abbr": "HOR",
+     "label": "Horizons et apparentés",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#32B3CA"
+    },
+    {
+     "uid": "PO845470",
+     "leg": 17,
+     "abbr": "HOR",
+     "label": "Horizons & Indépendants",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#B5E2F9"
+    }
+   ]
+  },
+  {
+   "id": "LR",
+   "short": "LR",
+   "name": "Les Républicains",
+   "desc": "Groupe Les Républicains (2022-2024) puis Droite Républicaine",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800508",
+     "leg": 16,
+     "abbr": "LR",
+     "label": "Les Républicains",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#4565AD"
+    },
+    {
+     "uid": "PO845425",
+     "leg": 17,
+     "abbr": "DR",
+     "label": "Droite Républicaine",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#8CB0DC"
+    }
+   ]
+  },
+  {
+   "id": "UDR",
+   "short": "UDR",
+   "name": "UDR (Ciotti)",
+   "desc": "Union des droites pour la République, groupe d'Éric Ciotti allié au RN (depuis 2024)",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO845520",
+     "leg": 17,
+     "abbr": "AD",
+     "label": "À Droite",
+     "from": "2024-07-18",
+     "to": "2024-09-11",
+     "color": "#3367A7"
+    },
+    {
+     "uid": "PO847173",
+     "leg": 17,
+     "abbr": "UDR",
+     "label": "UDR",
+     "from": "2024-09-12",
+     "to": "2025-09-04",
+     "color": "#3367A7"
+    },
+    {
+     "uid": "PO872880",
+     "leg": 17,
+     "abbr": "UDR",
+     "label": "Union des droites pour la République",
+     "from": "2025-09-05",
+     "to": null,
+     "color": "#3367A7"
+    }
+   ]
+  },
+  {
+   "id": "RN",
+   "short": "RN",
+   "name": "Rassemblement national",
+   "desc": "Groupe Rassemblement National",
+   "hasPosition": true,
+   "groups": [
+    {
+     "uid": "PO800520",
+     "leg": 16,
+     "abbr": "RN",
+     "label": "Rassemblement National",
+     "from": "2022-06-28",
+     "to": "2024-06-09",
+     "color": "#35495E"
+    },
+    {
+     "uid": "PO845401",
+     "leg": 17,
+     "abbr": "RN",
+     "label": "Rassemblement National",
+     "from": "2024-07-18",
+     "to": null,
+     "color": "#313567"
+    }
+   ]
+  },
+  {
+   "id": "NI",
+   "short": "Non-inscrits",
+   "name": "Non-inscrits",
+   "desc": "Députés n'appartenant à aucun groupe (pas de position collective)",
+   "hasPosition": false,
+   "groups": [
+    {
+     "uid": "PO793087",
+     "leg": 16,
+     "abbr": "NI",
+     "label": "Non inscrit",
+     "from": "2022-06-22",
+     "to": "2024-06-09",
+     "color": "#8D949A"
+    },
+    {
+     "uid": "PO840056",
+     "leg": 17,
+     "abbr": "NI",
+     "label": "Non inscrit",
+     "from": "2024-07-01",
+     "to": null,
+     "color": "#8D949A"
+    }
+   ]
+  }
+ ],
+ "positionFamilies": [
+  "GDR",
+  "LFI",
+  "ECO",
+  "SOC",
+  "LIOT",
+  "DEM",
+  "REN",
+  "HOR",
+  "LR",
+  "UDR",
+  "RN"
+ ],
+ "authors": [
+  "GDR",
+  "LFI",
+  "ECO",
+  "SOC",
+  "LIOT",
+  "DEM",
+  "REN",
+  "HOR",
+  "LR",
+  "UDR",
+  "RN",
+  "GOUV",
+  "AUTRE"
+ ],
+ "kinds": [
+  {
+   "id": "ensemble",
+   "label": "Vote sur l'ensemble d'un texte"
+  },
+  {
+   "id": "partie",
+   "label": "Vote sur une partie d'un budget"
+  },
+  {
+   "id": "censure",
+   "label": "Motion de censure"
+  },
+  {
+   "id": "confiance",
+   "label": "Vote de confiance"
+  },
+  {
+   "id": "declaration",
+   "label": "Déclaration du Gouvernement"
+  },
+  {
+   "id": "motion",
+   "label": "Motion de procédure (rejet, renvoi…)"
+  },
+  {
+   "id": "article",
+   "label": "Vote sur un article"
+  },
+  {
+   "id": "amendement",
+   "label": "Amendement"
+  },
+  {
+   "id": "credits",
+   "label": "Crédits budgétaires"
+  },
+  {
+   "id": "resolution",
+   "label": "Proposition de résolution"
+  },
+  {
+   "id": "procedure",
+   "label": "Vote de procédure"
+  },
+  {
+   "id": "autre",
+   "label": "Autre"
+  }
+ ],
+ "themes": [
+  {
+   "id": "budget",
+   "label": "Budget & impôts"
+  },
+  {
+   "id": "social",
+   "label": "Retraites & protection sociale"
+  },
+  {
+   "id": "sante",
+   "label": "Santé"
+  },
+  {
+   "id": "travail",
+   "label": "Travail & emploi"
+  },
+  {
+   "id": "immigration",
+   "label": "Immigration"
+  },
+  {
+   "id": "securite",
+   "label": "Sécurité & justice"
+  },
+  {
+   "id": "ecologie",
+   "label": "Environnement, énergie & transports"
+  },
+  {
+   "id": "agriculture",
+   "label": "Agriculture & alimentation"
+  },
+  {
+   "id": "logement",
+   "label": "Logement & territoires"
+  },
+  {
+   "id": "outremer",
+   "label": "Outre-mer"
+  },
+  {
+   "id": "economie",
+   "label": "Économie & entreprises"
+  },
+  {
+   "id": "education",
+   "label": "Éducation, culture & sport"
+  },
+  {
+   "id": "societe",
+   "label": "Société & droits"
+  },
+  {
+   "id": "institutions",
+   "label": "Institutions & vie démocratique"
+  },
+  {
+   "id": "international",
+   "label": "Défense & international"
+  },
+  {
+   "id": "autre",
+   "label": "Autres"
+  }
+ ],
+ "governments": [
+  {
+   "id": "PO791579",
+   "pm": "Élisabeth Borne",
+   "pmCiv": "Mme",
+   "from": "2022-05-17",
+   "to": "2024-01-09",
+   "label": "Élisabeth Borne"
+  },
+  {
+   "id": "PO833673",
+   "pm": "Gabriel Attal",
+   "pmCiv": "M.",
+   "from": "2024-01-10",
+   "to": "2024-09-05",
+   "label": "Gabriel Attal"
+  },
+  {
+   "id": "PO847639",
+   "pm": "Michel Barnier",
+   "pmCiv": "M.",
+   "from": "2024-09-06",
+   "to": "2024-12-13",
+   "label": "Michel Barnier"
+  },
+  {
+   "id": "PO855052",
+   "pm": "François Bayrou",
+   "pmCiv": "M.",
+   "from": "2024-12-14",
+   "to": "2025-09-09",
+   "label": "François Bayrou"
+  },
+  {
+   "id": "PO873418",
+   "pm": "Sébastien Lecornu",
+   "pmCiv": "M.",
+   "from": "2025-09-10",
+   "to": "2025-10-10",
+   "label": "Sébastien Lecornu I"
+  },
+  {
+   "id": "PO873634",
+   "pm": "Sébastien Lecornu",
+   "pmCiv": "M.",
+   "from": "2025-10-11",
+   "to": null,
+   "label": "Sébastien Lecornu II"
+  }
+ ],
+ "counts": {
+  "scrutins": 13683,
+  "deputies": 836,
+  "texts": 517,
+  "amendments": 11385
+ }
+}

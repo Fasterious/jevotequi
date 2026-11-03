@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "site",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["--prefix", "web", "vite", "preview", "web", "--port", "4173", "--strictPort"],
+      "port": 4173
+    }
+  ]
+}
