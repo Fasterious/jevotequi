@@ -6,4 +6,4 @@
 
 > Je vote qui ?, d'après les données ouvertes de l'Assemblée nationale (version de la méthode et date de mise à jour indiquées dans `meta.json`).
 
-Le **code** est sous licence MIT (fichier `LICENSE`).
+Le **code** est un logiciel libre, sous licence AGPL-3.0-or-later (fichier `LICENSE`).

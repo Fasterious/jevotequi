@@ -226,7 +226,7 @@ export function Methode() {
 
         <h2>Reproduire, réutiliser, citer</h2>
         <p>
-          Le code est publié sous licence MIT, les données dérivées sous Licence Ouverte 2.0. La méthode complète (<code>METHODOLOGIE.md</code>), le dictionnaire
+          Le code est un logiciel libre, sous licence AGPL-3.0 ; les données dérivées sont sous Licence Ouverte 2.0. La méthode complète (<code>METHODOLOGIE.md</code>), le dictionnaire
           des données (<code>DONNEES.md</code>) et le journal des versions accompagnent le code.
           {!IS_ARTIFACT && (
             <>
