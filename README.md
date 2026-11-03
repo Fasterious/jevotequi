@@ -4,14 +4,14 @@
 
 **Qui a voté quoi à l'Assemblée nationale, pour décider en connaissance de cause.** Ce site compare les positions des groupes politiques sur l'ensemble des scrutins publics depuis juillet 2022 (16e et 17e législatures) : qui vote comme qui, sur quels sujets, et comment cela évolue. Chaque chiffre renvoie à la liste des scrutins qui le composent, puis à la page officielle de chaque scrutin. Il ne dit pas pour qui voter : il donne à chacun les faits pour décider seul.
 
-Logiciel libre (code sous licence AGPL-3.0, données sous Licence Ouverte 2.0). Site statique : aucune base de données, aucun traceur, une seule fonction serveur pour transmettre les avis envoyés volontairement. Une chaîne de traitement en Python transforme les données ouvertes de l'Assemblée en fichiers JSON ; une application React les affiche.
+Logiciel libre (code sous licence AGPL-3.0, données sous Licence Ouverte 2.0). Site statique : aucune base de données, aucun pistage (ni mesure d'audience, ni publicité, ni ressource chargée chez un tiers), une seule fonction serveur pour transmettre les avis envoyés volontairement. Une chaîne de traitement en Python transforme les données ouvertes de l'Assemblée en fichiers JSON ; une application React les affiche.
 
 ## Ce que montre le site
 
 | Page | Contenu |
 |---|---|
-| Quiz | « Et toi, tu aurais voté quoi ? » : 20 vrais scrutins tirés au hasard sur tous les thèmes ; après chaque réponse, le vote réel de chaque groupe ; un profil qui s'affine (avec sa marge d'incertitude) ; carte à faire glisser sur téléphone, boutons et clavier sur ordinateur |
-| Accueil | Taux d'accord de chaque groupe avec un groupe de référence (Renaissance par défaut), matrice de toutes les paires, évolution par trimestre, accord par thème, carte des députés selon leurs votes, grands votes (scrutins solennels), motions de censure |
+| Quiz | « Et vous, vous auriez voté quoi ? » : de vrais scrutins par blocs de 10, tirés au sort (un thème différent par question, les votes les plus disputés plus souvent) ; après chaque réponse, le vote réel de chaque groupe et le lien vers le scrutin officiel ; après chaque bloc, un profil avec sa marge d'incertitude, la solidité du classement (rééchantillonnage des réponses) et son palier (esquissé, affiné, solide) ; carte à faire glisser sur téléphone, boutons et clavier sur ordinateur |
+| Accueil | La signature, les engagements, la vidéo de présentation et l'accès au quiz ; puis le taux d'accord de chaque groupe avec un groupe de référence (tiré au hasard à l'arrivée, aucun groupe n'est mis en avant), matrice de toutes les paires, évolution par trimestre, accord par thème, carte des députés selon leurs votes, grands votes (scrutins solennels), motions de censure |
 | Comparer | Deux groupes, deux députés, ou un député et un groupe : taux d'accord, par thème, par type de vote, dans le temps, et la liste de chaque vote (identiques / opposés) |
 | Scrutins | Recherche dans les 13 683 scrutins, filtres (type, thème, résultat, positions : « RN pour et Renaissance contre ») |
 | Scrutin | Résultat officiel, contenu de l'amendement (exposé sommaire, auteur, dispositif), hémicycle, vote de chaque groupe et de chaque député, liens officiels, méthode de rattachement |
@@ -28,19 +28,18 @@ Le but est que chacun sache **qui a voté quoi**, et se fasse son propre avis.
 - **Les faits, pas les commentaires** : le site compte des votes ; il ne qualifie ni un vote ni un parti.
 - **Tout est vérifiable** : chaque chiffre mène au scrutin officiel de l'Assemblée nationale.
 - **Aucune consigne de vote** : le quiz compare des réponses à des votes passés ; il ne dit pas pour qui voter.
-- **Rien n'est collecté sans votre geste** : pas de compte, pas de traceur ; les réponses au quiz restent dans le navigateur ; seul l'avis envoyé volontairement par le formulaire « Aidez-nous » est conservé, sans nom ni adresse.
+- **Rien n'est collecté sans votre geste** : pas de compte, pas de pistage, aucune ressource chargée chez un tiers ; les réponses au quiz restent dans le navigateur ; seul l'avis envoyé volontairement par le formulaire « Aidez-nous » est conservé, sans nom ni adresse.
 - **Les erreurs se corrigent en public** : chaque correction est datée et expliquée dans `CHANGELOG.md`.
 
-## Vidéos de présentation
+## Vidéo de présentation
 
-Des vidéos courtes présenteront le projet, sur le modèle des initiatives menées pour OpenScribe (les bonnes pratiques de ces vidéos seront ajoutées ici). Principes retenus :
+Une vidéo de 1 min 10 présente le projet (`web/public/video/`, sous-titres WebVTT). Elle ne se télécharge que si le visiteur la lance. Elle est fabriquée dans un studio séparé, avec les mêmes exigences que le site :
 
-- **raconter une histoire** plutôt qu'aligner des chiffres : une question que chacun se pose (« pour qui voter en 2027 ? »), un vrai vote, sa révélation ;
-- **des animations qui servent le propos**, synchronisées avec la voix et le texte : chaque animation illustre exactement la phrase prononcée à ce moment ;
-- **présenter le concept** en une phrase — *Les promesses, c'est bien. Les actes, c'est mieux.* — puis le montrer : on vote, on découvre qui a voté comme soi ;
-- **rester apartisan** : les exemples sont choisis pour couvrir tous les bords, et chaque chiffre montré à l'écran renvoie à son scrutin.
-
-Les écrans du site peuvent servir de matière : la carte du quiz qu'on fait glisser, la révélation groupe par groupe, l'hémicycle d'un scrutin, le profil qui se précise à chaque réponse.
+- **chaque question, vote et décompte montré à l'écran est vérifié par le code** contre les données publiées ; le rendu est refusé sinon ;
+- **aucun groupe n'est nommé à la voix** : l'écran montre tous les groupes, dans l'ordre de l'hémicycle, avec leurs décomptes et ceux des non-inscrits ; les couleurs (et un signe dans chaque pastille) disent le vote, jamais le parti ;
+- **des exemples équilibrés, choisis par calcul** parmi les questions du quiz : trois vrais votes (squat, gel des pensions, parité dans les petites communes) où chaque groupe est au moins une fois du côté du pour et une fois du côté du contre ; chaque révélation part de cercles vides, pour qu'aucune image ne mêle deux votes ;
+- **le concept en une phrase**, dite une seule fois : *Les promesses, c'est bien. Les actes, c'est mieux.* ; et la limite, dite aussi : une tendance, pas un verdict ; personne ne vous dit pour qui voter ;
+- **la voix est une voix de synthèse**, et la vidéo le dit.
 
 ## Avis des visiteurs : directement dans GitHub, sans compte
 
@@ -52,10 +51,10 @@ Le formulaire « Aidez-nous à améliorer cet outil » crée un ticket GitHub (�
 
 Activation, une fois le dépôt et le projet Vercel créés :
 
-1. Choisir le dépôt qui reçoit les avis : un dépôt privé dédié (recommandé au lancement : on trie avant de rendre public) ou le dépôt public du projet.
+1. Choisir le dépôt qui reçoit les avis : un dépôt privé dédié (recommandé au lancement : on trie avant de rendre public) ou le dépôt public du projet. **Fait : `Fasterious/jevotequi-avis`, privé.**
 2. Créer un jeton GitHub à accès fin (« fine-grained ») limité à ce dépôt, avec la seule permission « Issues : Read and write ».
-3. Dans les réglages du projet Vercel, ajouter `AVIS_GITHUB_TOKEN` (le jeton), `AVIS_REPO` (`proprietaire/depot`) et, si le dépôt est public, `AVIS_PUBLIC=1` (la page affiche alors le lien du ticket).
-4. Créer les étiquettes, une fois :
+3. Dans les réglages du projet Vercel, ajouter `AVIS_GITHUB_TOKEN` (le jeton), `AVIS_REPO` (`proprietaire/depot`) et, si le dépôt est public, `AVIS_PUBLIC=1` (la page affiche alors le lien du ticket). **`AVIS_REPO` est réglé ; reste le jeton.**
+4. Créer les étiquettes, une fois (**fait** pour `jevotequi-avis`) :
    ```bash
    AVIS_GITHUB_TOKEN=… AVIS_REPO=proprietaire/depot node scripts/avis-etiquettes.cjs
    ```
@@ -129,7 +128,7 @@ Un contrôle bloquant en échec arrête la chaîne. Le rapport complet est dans 
 - **Thèmes** : mots-clés du titre du dossier législatif, sinon commission saisie au fond.
 - **Carte** : positionnement multidimensionnel classique sur le taux de désaccord entre députés.
 - **Sensibilité** : le taux d'accord est recalculé selon six définitions ; le classement des groupes par proximité avec Renaissance reste stable (corrélation de rang ≥ 0,97).
-- **Quiz** : 1 point si un groupe a voté comme la personne, ½ s'il s'est abstenu ; marge d'incertitude de Wilson à 90 % ; formulations relues et contrôlées (METHODOLOGIE § 14).
+- **Quiz** : 1 point si un groupe a voté comme la personne, ½ s'il s'est abstenu ; marge d'incertitude de Wilson à 90 % ; blocs de 10 questions et solidité du classement par rééchantillonnage ; formulations contrôlées automatiquement (Q1 à Q7), en attente de relecture par un comité pluraliste (METHODOLOGIE § 14).
 
 ## Déployer
 
@@ -139,7 +138,7 @@ Le site est un dossier statique (`web/dist`) : Vercel, Netlify, GitHub Pages ou 
 npx vercel deploy --prod
 ```
 
-Une fois le projet sur GitHub, `.github/workflows/ci.yml` vérifie chaque proposition (tests, typage, build) et `update-data.yml` recalcule les données chaque nuit.
+Le projet Vercel `jevotequi` est relié au dépôt GitHub : chaque envoi sur `main` met le site à jour. `.github/workflows/ci.yml` vérifie chaque proposition (tests, typage, build) et `update-data.yml` recalcule les données chaque nuit (les documents récupérés un par un sont gardés en cache).
 
 ## Licences
 

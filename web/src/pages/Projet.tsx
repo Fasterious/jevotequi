@@ -4,6 +4,7 @@ import { fmtInt } from "../lib/format";
 import { href } from "../lib/router";
 import { feedbackChannel, feedbackText, MAX_MESSAGE, MODULES, PROFILS, type Feedback, type Receipt } from "../lib/feedback";
 import { useToast } from "../components/ui";
+import { VideoPresentation } from "../components/Video";
 
 export function Projet({ section }: { section?: string }) {
   const core = useCore();
@@ -12,9 +13,9 @@ export function Projet({ section }: { section?: string }) {
   }, [section]);
 
   const modules = [
-    { label: "Le quiz", to: href({ page: "quiz" }), text: "Votez sur de vrais textes et découvrez quels groupes ont voté comme vous." },
+    { label: "Le quiz", to: href({ page: "quiz" }), text: "Dites pour ou contre sur de vrais textes et découvrez de quels groupes vos réponses se rapprochent." },
     { label: "Comparer", to: href({ page: "compare" }), text: "Mesurez à quelle fréquence deux groupes, ou deux députés, votent de la même façon." },
-    { label: "Les scrutins", to: href({ page: "scrutins" }), text: `Retrouvez chacun des ${fmtInt(core.N)} votes publics depuis 2022, avec le vote de chaque député.` },
+    { label: "Les scrutins", to: href({ page: "scrutins" }), text: `Retrouvez chacun des ${fmtInt(core.N)} scrutins publics depuis 2022, et qui a voté quoi.` },
     { label: "Les députés", to: href({ page: "deputes" }), text: "Consultez la participation et les votes de chaque élu, et ceux qui votent comme lui." },
     { label: "La méthode", to: href({ page: "methode" }), text: "Voyez comment chaque chiffre est calculé, vérifié et corrigé." },
   ];
@@ -28,6 +29,7 @@ export function Projet({ section }: { section?: string }) {
           Ce site est un projet citoyen, indépendant et apartisan, pensé pour la période électorale. Il permet de savoir qui a voté quoi à l'Assemblée nationale, et
           de voir, à partir de vos propres choix, quels groupes vous ont le mieux représenté par leurs votes.
         </p>
+        <VideoPresentation />
       </section>
 
       <section className="section" aria-labelledby="h-modules">
@@ -86,13 +88,42 @@ export function Projet({ section }: { section?: string }) {
             <strong>Aucune consigne de vote</strong> : le quiz compare vos réponses à des votes passés ; il ne dit pas pour qui voter.
           </li>
           <li>
-            <strong>Rien n'est collecté sans votre geste</strong> : pas de compte, pas de traceur ; vos réponses au quiz restent sur votre appareil, et seul l'avis que
+            <strong>Rien n'est collecté sans votre geste</strong> : pas de compte, pas de pistage ; vos réponses au quiz restent sur votre appareil, et seul l'avis que
             vous choisissez d'envoyer est conservé.
           </li>
           <li>
             <strong>Les erreurs se corrigent en public</strong>, datées et expliquées. Le code et les données sont libres : chacun peut tout vérifier et tout réutiliser.
           </li>
+          <li>
+            <strong>Un outil qui appartient à ceux qui l'utilisent</strong> : chacun peut signaler une erreur, proposer une question, relire le code ou l'améliorer.
+            C'est l'intelligence de tous qui le rend plus juste.
+          </li>
         </ul>
+      </section>
+
+      <section className="section" id="mentions" aria-labelledby="h-mentions">
+        <div className="section-head">
+          <h2 id="h-mentions">Mentions légales</h2>
+        </div>
+        <div className="card stack small">
+          <p>
+            <strong>Éditeur.</strong> Ce site est édité à titre non professionnel par un particulier, qui a communiqué son identité à l'hébergeur, comme le
+            permet l'article 1-1 de la loi du 21 juin 2004 pour la confiance dans l'économie numérique. Pour le joindre :{" "}
+            <a href={href({ page: "projet", section: "avis" })}>le formulaire d'avis</a>.
+          </p>
+          <p>
+            <strong>Hébergeur.</strong> Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723, États-Unis.
+          </p>
+          <p>
+            <strong>Données personnelles.</strong> Pas de compte, pas de cookie, pas de mesure d'audience : vos réponses au quiz restent dans votre navigateur.
+            Seul l'avis que vous choisissez d'envoyer est conservé, sans nom ni adresse IP, dans un dépôt privé du projet chez GitHub (États-Unis) ; pour le
+            faire supprimer, écrivez-le dans le même formulaire en citant son numéro. Comme tout hébergeur, Vercel tient des journaux techniques de connexion.
+          </p>
+          <p>
+            <strong>Données et code.</strong> Votes : <a href="https://data.assemblee-nationale.fr/" target="_blank" rel="noopener noreferrer">data.assemblee-nationale.fr</a>,
+            Licence Ouverte Etalab 2.0. Code du site : logiciel libre, licence AGPL-3.0.
+          </p>
+        </div>
       </section>
     </div>
   );

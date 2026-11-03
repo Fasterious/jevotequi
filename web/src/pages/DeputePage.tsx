@@ -121,7 +121,7 @@ function DeputeView({ d, deps }: { d: Deputy; deps: DeputyIndex }) {
           <a className="btn" href={`https://www.assemblee-nationale.fr/dyn/deputes/${d.id}`} target="_blank" rel="noopener noreferrer">
             Fiche officielle ↗
           </a>
-          <a className="btn" href={href({ page: "compare", a: d.id, b: lastFam === "NI" ? "REN" : lastFam })}>
+          <a className="btn" href={href({ page: "compare", a: d.id, b: lastFam === "NI" ? undefined : lastFam })}>
             Comparer
           </a>
         </div>

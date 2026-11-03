@@ -15,7 +15,7 @@
 | L3 Type de vote reconnu | rapprochement | ok | 0 | ≤ 0,1 % « autre » |  |
 | L4 Thème attribué | rapprochement | ok | 0 | ≤ 1 % « autres » |  |
 | L5 Numéro de l'amendement retrouvé = numéro cité par le scrutin | rapprochement | ok | 0 | 0 |  |
-| L6 Amendement affiché et scrutin rattachés au même texte | rapprochement | ok | 0 | 0 | corrections appliquées — amendement retrouvé grâce aux autres scrutins du même texte : 1; dossier remplacé : 4; dossier retiré : 3; amendement d'un autre texte (même séance, même numéro) : 6 |
+| L6 Amendement affiché et scrutin rattachés au même texte | rapprochement | ok | 0 | 0 | corrections appliquées — amendement retrouvé grâce aux autres scrutins du même texte : 1; dossier remplacé : 4; dossier retiré : 3; amendement d'un autre texte (même séance, même numéro) : 4 |
 | L7 Rattachements par la séance confirmés (intitulé ou autres scrutins du même texte) | rapprochement | ok | 0 | 0 |  |
 | L8 Auteur de l'amendement affiché = député cité par le scrutin (ou cosignataire) | rapprochement | ok | 0.19% | ≤ 0,5 % | 10917 confirmés sur 10938 ; écarts connus : l'intitulé cite parfois le député qui a défendu l'amendement plutôt que son premier signataire (numéro, séance, texte et sort concordent) — VTANR5L16V58, VTANR5L16V473, VTANR5L16V1058, VTANR5L16V1067, VTANR5L16V1072, VTANR5L16V1077 |
 | K1 Valeurs de référence vérifiées sur le site de l'Assemblée | calcul | ok | 8/8 | 8/8 |  |

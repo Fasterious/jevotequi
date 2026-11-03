@@ -9,6 +9,8 @@ import { DeputyMap } from "../components/DeputyMap";
 import { CensureChart } from "../components/CensureChart";
 import { ScrutinList } from "../components/ScrutinList";
 import { famColor } from "../lib/theme";
+import { groupeAuHasard } from "../lib/hasard";
+import { VideoPresentation } from "../components/Video";
 import { ErrorBox, FamChip, HowTo, Loading, ScopeBar, Segmented, useScope, VoteLegend } from "../components/ui";
 
 export function scopeLabel(core: Core, sc: Scope): string {
@@ -21,14 +23,10 @@ export function scopeLabel(core: Core, sc: Scope): string {
   return parts.join(", ");
 }
 
-function useRefFam(): [string, (f: string) => void] {
-  const [v, setV] = React.useState<string>(() => {
-    try {
-      return sessionStorage.getItem("qvq-ref") || "REN";
-    } catch {
-      return "REN";
-    }
-  });
+// Groupe de référence tiré au hasard à la première visite : aucun groupe n'est mis en avant par défaut.
+// L'UDR, créée en 2024, est écartée du tirage pour que la référence existe sur toute la période.
+function useRefFam(fams: string[]): [string, (f: string) => void] {
+  const [v, setV] = React.useState<string>(() => groupeAuHasard(fams.filter((f) => f !== "UDR"), "qvq-ref"));
   const set = (f: string) => {
     setV(f);
     try {
@@ -43,7 +41,7 @@ function useRefFam(): [string, (f: string) => void] {
 export function Home() {
   const core = useCore();
   const [scope] = useScope();
-  const [refFam, setRefFam] = useRefFam();
+  const [refFam, setRefFam] = useRefFam(core.posFams);
   const idx = React.useMemo(() => selectIdx(core, scope), [core, scope]);
   const visibleFams = React.useMemo(
     () => core.posFams.filter((f) => !(scope.leg === 16 && f === "UDR")),
@@ -68,20 +66,40 @@ export function Home() {
     <div className="wrap">
       <section className="hero">
         <span className="eyebrow">
-          Assemblée nationale · {fmtMonthYear(first)} – {fmtMonthYear(last)}
+          Présidentielle 2027 · outil citoyen et apartisan · Assemblée nationale, {fmtMonthYear(first)} – {fmtMonthYear(last)}
         </span>
-        <h1>Qui vote avec qui&nbsp;?</h1>
+        <h1>
+          Les promesses, c'est bien.
+          <br />
+          <mark>Les actes</mark>, c'est mieux.
+        </h1>
         <p className="lead">
-          Les votes réels des députés, scrutin par scrutin. Nous avons compté les <mark>{fmtInt(core.N)} scrutins publics</mark> de l'Assemblée nationale
-          depuis le début du second mandat d'Emmanuel Macron, et la position prise par chaque groupe politique à chacun d'eux.
+          Avant de voter en 2027, regardez ce que les groupes politiques ont fait. Nous avons rassemblé les <mark>{fmtInt(core.N)} scrutins publics</mark> de
+          l'Assemblée nationale depuis les élections législatives de juin 2022, et la position de chaque groupe à chacun d'eux. Personne ici ne vous dit pour
+          qui voter : vous regardez les actes, vous décidez.
         </p>
         <a className="quiz-cta" href={href({ page: "quiz" })}>
           <span className="quiz-cta-text">
-            <strong>Les promesses, c'est bien. Les actes, c'est mieux.</strong>
-            <span>Vote sur 20 vrais textes de l'Assemblée et découvre quels groupes ont voté comme toi.</span>
+            <strong>Et vous, vous auriez voté quoi&nbsp;?</strong>
+            <span>Dites pour ou contre sur 10 vrais textes de l'Assemblée, puis affinez par blocs de 10. Vous découvrez le vote de chaque groupe. Sans compte.</span>
           </span>
           <span className="btn primary big">Faire le quiz →</span>
         </a>
+        <ul className="hero-trust" aria-label="Nos engagements">
+          <li>Mêmes règles pour tous les groupes</li>
+          <li>Chaque chiffre mène au scrutin officiel</li>
+          <li>Sans compte, sans publicité, sans pistage</li>
+          <li>
+            <a href={href({ page: "projet", section: "avis" })}>Ouvert à vos corrections et à vos idées</a>
+          </li>
+        </ul>
+      </section>
+
+      <section className="section video-section" aria-labelledby="h-video">
+        <h2 id="h-video" className="sr-only">
+          La présentation en vidéo
+        </h2>
+        <VideoPresentation />
       </section>
 
       <ScopeBar count={idx.length} showGov />
@@ -101,7 +119,7 @@ export function Home() {
           </h2>
           <p className="ink2">
             Part des scrutins où chaque groupe a pris <strong>exactement la même position</strong> que {core.famById[refFam].name} (pour, contre ou
-            abstention){sl ? ` — ${sl}` : ""}.
+            abstention){sl ? ` — ${sl}` : ""}. Le groupe de départ est tiré au hasard à votre arrivée : choisissez celui qui vous intéresse.
           </p>
           <RankBars
             rows={ags.map(({ f, ag }) => ({

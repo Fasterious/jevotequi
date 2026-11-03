@@ -1,5 +1,6 @@
 import React from "react";
 import { deputyVector, fold, loadDeputies, useAsync, useCore, type DeputyIndex } from "../lib/data";
+import { groupeAuHasard } from "../lib/hasard";
 import { agree, byField, isDeputyId, isVote, rate, selectIdx, series } from "../lib/stats";
 import { fmtInt, fmtPct } from "../lib/format";
 import { go } from "../lib/router";
@@ -63,8 +64,9 @@ type Tab = "same" | "opp" | "partial" | "all";
 export function Compare({ a, b }: { a?: string; b?: string }) {
   const core = useCore();
   const deps = useAsync(loadDeputies, []);
-  const A = a && (core.famVec[a] || isDeputyId(a)) ? a : "RN";
-  const B = b && (core.famVec[b] || isDeputyId(b)) ? b : A === "REN" ? "RN" : "REN";
+  // Sans paire demandée, deux groupes tirés au hasard : aucune comparaison n'est mise en avant par défaut.
+  const A = a && (core.famVec[a] || isDeputyId(a)) ? a : groupeAuHasard(core.posFams, "qvq-comparer-a");
+  const B = b && (core.famVec[b] || isDeputyId(b)) ? b : groupeAuHasard(core.posFams, "qvq-comparer-b", A);
   const [scope] = useScope();
   const idx = React.useMemo(() => selectIdx(core, scope), [core, scope]);
   const va = useVector(A, deps.data);

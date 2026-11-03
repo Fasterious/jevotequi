@@ -1,4 +1,4 @@
-"""Étape 6 — Quiz « Et toi, tu aurais voté quoi ? ».
+"""Étape 6 — Quiz « Et vous, vous auriez voté quoi ? ».
 
 Entrée  : pipeline/quiz.toml (formulation des questions, seule partie rédigée à la main),
           tables de l'étape 3 (scrutins, rattachements) et de l'étape 4 (positions des groupes).

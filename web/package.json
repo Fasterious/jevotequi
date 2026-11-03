@@ -19,5 +19,13 @@
     "vite": "7.3.7",
     "vite-plugin-singlefile": "2.2.1"
   },
-  "license": "AGPL-3.0-or-later"
+  "license": "AGPL-3.0-or-later",
+  "dependencies": {
+    "@fontsource-variable/atkinson-hyperlegible-next": "5.3.0",
+    "@fontsource-variable/bricolage-grotesque": "5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "d3": "7.9.0",
+    "react": "18.3.1",
+    "react-dom": "18.3.1"
+  }
 }

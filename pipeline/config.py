@@ -6,7 +6,7 @@ classement thématique) est centralisé ici pour être relu et discuté facileme
 
 # Version de la méthode : à incrémenter (et à décrire dans CHANGELOG.md) dès qu'une règle de
 # calcul, de classement ou de rattachement change. Elle est publiée avec les données.
-METHOD_VERSION = "1.1.0"
+METHOD_VERSION = "1.2.0"
 
 LEGISLATURES = [16, 17]
 
@@ -67,12 +67,12 @@ FAMILIES = [
     },
     {
         "id": "REN", "short": "Renaissance", "name": "Renaissance",
-        "desc": "Parti d'Emmanuel Macron : groupe Renaissance (2022-2024) puis Ensemble pour la République (EPR)",
+        "desc": "Groupe Renaissance (2022-2024) puis Ensemble pour la République (EPR)",
         "groups": ["PO800538", "PO845407"], "match": r"renaissance|ensemble pour la r[ée]publique",
     },
     {
         "id": "HOR", "short": "Horizons", "name": "Horizons",
-        "desc": "Parti d'Édouard Philippe : Horizons et apparentés puis Horizons & Indépendants",
+        "desc": "Groupe Horizons et apparentés (2022-2024) puis Horizons & Indépendants",
         "groups": ["PO800514", "PO845470"], "match": r"horizons",
     },
     {
@@ -81,8 +81,8 @@ FAMILIES = [
         "groups": ["PO800508", "PO845425"], "match": r"les r[ée]publicains|droite r[ée]publicaine",
     },
     {
-        "id": "UDR", "short": "UDR", "name": "UDR (Ciotti)",
-        "desc": "Union des droites pour la République, groupe d'Éric Ciotti allié au RN (depuis 2024)",
+        "id": "UDR", "short": "UDR", "name": "Union des droites pour la République",
+        "desc": "Groupe Union des droites pour la République (depuis 2024)",
         "groups": ["PO845520", "PO847173", "PO872880"], "match": r"union des droites|^udr$|^[àa] droite",
     },
     {

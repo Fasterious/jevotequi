@@ -21,6 +21,14 @@ jobs:
           python-version: "3.13"
       - name: Dépendances
         run: pip install -r pipeline/requirements.txt
+      # Les amendements de 2022-2024 sont récupérés un par un : sans cache, une seule erreur réseau
+      # ferait disparaître un amendement une nuit et réapparaître la suivante.
+      - name: Documents déjà récupérés
+        uses: actions/cache@v4
+        with:
+          path: data/raw/documents
+          key: documents-${{ github.run_id }}
+          restore-keys: documents-
       - name: Téléchargement, calcul et contrôles (un contrôle en échec arrête la publication)
         run: python3 -I pipeline/run.py all --refresh
       - name: Tests

@@ -29,3 +29,5 @@ jobs:
         run: npm ci && npm run typecheck && npm run build
       - name: Tests de la réception des avis (GitHub simulé)
         run: node --test tests/avis.test.cjs
+      - name: Tests du quiz (tirage par blocs, solidité du classement)
+        run: node --test tests/quiz.test.mjs

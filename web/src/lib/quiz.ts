@@ -1,8 +1,13 @@
 import { getJSON } from "./data";
+import { available, drawBlock, points, solidityOf, viewedPos, type Answer, type Solidity } from "./tirage";
 
-/* Quiz « Et toi, tu aurais voté quoi ? » : données, tirage, calcul du profil, partage.
+/* Quiz « Et vous, vous auriez voté quoi ? » : données, tirage, calcul du profil, partage.
    Les positions des groupes viennent des votes nominatifs (pipeline, étape 6) ; ce module
-   ne fait que comparer les réponses de la personne à ces positions. */
+   ne fait que comparer les réponses de la personne à ces positions. Le tirage par blocs, le
+   barème et la solidité du classement sont des fonctions pures, testées : voir ./tirage.ts. */
+
+export { BLOCK_SIZE, SOLID_PERCENT, STAGE_MIN, profileStage, solidityPercent } from "./tirage";
+export type { Answer, Solidity, Stage } from "./tirage";
 
 export interface QuizQuestion {
   id: string;
@@ -45,8 +50,6 @@ export interface QuizData {
   };
 }
 
-export type Answer = "P" | "C" | "S";
-
 let quizPromise: Promise<QuizData> | null = null;
 export function loadQuiz(): Promise<QuizData> {
   if (!quizPromise) {
@@ -58,9 +61,7 @@ export function loadQuiz(): Promise<QuizData> {
 
 /** Position d'une famille vue depuis la question (« P » = pour la mesure décrite). */
 export function famPos(q: QuizQuestion, i: number): string {
-  const c = q.pos[i];
-  if (!q.inv) return c;
-  return c === "P" ? "C" : c === "C" ? "P" : c;
+  return viewedPos(q, i);
 }
 
 /** Décomptes vus depuis la question : pour la mesure, contre, abstention. */
@@ -77,45 +78,15 @@ export function measureAdopted(q: QuizQuestion): boolean {
 
 /* ------------------------------------------------------------------ tirage */
 
-function shuffle<T>(xs: T[], rnd: () => number): T[] {
-  const a = [...xs];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(rnd() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
-}
-
-/** Tirage stratifié : un tour de thèmes (les moins représentés d'abord), puis un autre…,
-    jusqu'à `k` questions ; l'ordre final est mélangé. Aucune question déjà posée. */
+/** Bloc suivant de `k` questions : un thème différent à chaque question tant que possible, les
+    votes où les groupes se sont le plus partagés plus souvent ; aucune question déjà posée. */
 export function drawNext(data: QuizData, already: string[], k: number, themes: string[] | null, rnd: () => number = Math.random): string[] {
-  const done = new Set(already);
-  const pool = data.questions.filter((q) => !q.retired && !done.has(q.id) && (!themes || themes.includes(q.theme)));
-  const byTheme = new Map<string, QuizQuestion[]>();
-  for (const q of shuffle(pool, rnd)) {
-    if (!byTheme.has(q.theme)) byTheme.set(q.theme, []);
-    byTheme.get(q.theme)!.push(q);
-  }
-  const seen: Record<string, number> = {};
-  const byId = new Map(data.questions.map((q) => [q.id, q]));
-  for (const id of already) {
-    const t = byId.get(id)?.theme;
-    if (t) seen[t] = (seen[t] ?? 0) + 1;
-  }
-  const order = shuffle([...byTheme.keys()], rnd).sort((a, b) => (seen[a] ?? 0) - (seen[b] ?? 0));
-  const out: string[] = [];
-  while (out.length < k && order.some((t) => byTheme.get(t)!.length)) {
-    for (const t of order) {
-      const list = byTheme.get(t)!;
-      if (list.length && out.length < k) out.push(list.shift()!.id);
-    }
-  }
-  return shuffle(out, rnd);
+  return drawBlock(data.questions, already, k, themes, rnd);
 }
 
+/** Nombre de questions encore à poser dans les thèmes choisis (`null` = tous). */
 export function remaining(data: QuizData, already: string[], themes: string[] | null): number {
-  const done = new Set(already);
-  return data.questions.filter((q) => !q.retired && !done.has(q.id) && (!themes || themes.includes(q.theme))).length;
+  return available(data.questions, already, themes).length;
 }
 
 /* ------------------------------------------------------------------ profil */
@@ -156,18 +127,13 @@ export function scoreAll(data: QuizData, answers: Record<string, Answer>): FamSc
       if (a === "S") continue;
       const q = byId.get(id);
       if (!q) continue;
-      const p = famPos(q, i);
-      if (p === "P" || p === "C") {
-        n++;
-        if (p === a) {
-          score++;
-          same++;
-        } else opp++;
-      } else if (p === "A") {
-        n++;
-        score += 0.5;
-        abst++;
-      }
+      const pt = points(famPos(q, i), a);
+      if (pt == null) continue;
+      n++;
+      score += pt;
+      if (pt === 1) same++;
+      else if (pt === 0) opp++;
+      else abst++;
     }
     const rate = n ? score / n : null;
     const [lo, hi] = rate == null ? [null, null] : wilson(rate, n);
@@ -179,11 +145,11 @@ export function ranked(scores: FamScore[]): FamScore[] {
   return scores.filter((s) => s.n > 0).sort((a, b) => b.rate! - a.rate! || b.n - a.n || a.fam.localeCompare(b.fam));
 }
 
-/** Groupes dont l'intervalle chevauche celui du premier : impossibles à départager pour l'instant. */
-export function tiedWithLeader(r: FamScore[]): FamScore[] {
-  if (!r.length) return [];
-  const lead = r[0];
-  return r.slice(1).filter((s) => s.hi! >= lead.lo!);
+/** Solidité du classement : part des 1 000 rééchantillonnages des réponses où le ou les groupes en
+    tête le restent (graine dérivée des réponses : mêmes réponses, même chiffre). */
+export function solidity(data: QuizData, answers: Record<string, Answer>): Solidity & { topFams: string[] } {
+  const s = solidityOf(data.questions, data.families.length, answers);
+  return { ...s, topFams: s.top.map((i) => data.families[i]) };
 }
 
 /* ------------------------------------------------------------------ partage */

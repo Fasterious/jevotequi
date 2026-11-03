@@ -1,5 +1,6 @@
 import React from "react";
 import { getJSON, IS_ARTIFACT, useAsync, useCore } from "../lib/data";
+import { groupeAuHasard } from "../lib/hasard";
 import { fmtDate, fmtInt, fmtPct } from "../lib/format";
 import { href } from "../lib/router";
 import { FamChip, Loading } from "../components/ui";
@@ -162,10 +163,11 @@ export function Methode() {
           <li>une question = un scrutin public où au moins un groupe a voté pour et un autre contre, de préférence un vote décisif ;</li>
           <li>la mesure votée est décrite en mots simples, sans nom de parti ni de député, sans jugement de valeur ; le résultat et l'origine du texte ne sont révélés qu'après la réponse ;</li>
           <li>« pour » signifie toujours « pour la mesure décrite » ; quand le scrutin portait sur un amendement qui la supprimait, le sens est inversé et signalé ;</li>
-          <li>20 questions sont tirées au hasard en couvrant tous les thèmes choisis ;</li>
+          <li>le quiz commence par 10 questions, puis propose des blocs de 10 pour affiner ; le tirage couvre les thèmes choisis et favorise les votes qui départagent le plus les groupes (§ 14 de la méthode) ;</li>
           <li>
             accord avec un groupe : 1 point si même position, ½ point s'il s'est abstenu, 0 sinon ; la marge affichée est un intervalle de confiance à 90 %
-            (Wilson), qui décrit l'incertitude due au tirage des questions : environ ± 17 points avec 20 réponses.
+            (Wilson), qui décrit l'incertitude due au tirage des questions : environ ± 23 points avec 10 réponses, ± 17 avec 20 ; la solidité du classement (part des
+            rééchantillonnages où le groupe en tête le reste) dit si ce classement tiendrait avec d'autres questions.
           </li>
         </ul>
         <QuizBalance />
@@ -305,7 +307,7 @@ function CoverageBlock({ cov }: { cov: Coverage }) {
 
 function SensitivityBlock({ sens }: { sens: Sensitivity }) {
   const core = useCore();
-  const [ref, setRef] = React.useState("REN");
+  const [ref, setRef] = React.useState(() => groupeAuHasard(sens.familles, "qvq-sensibilite"));
   const others = sens.familles.filter((f) => f !== ref && sens.taux[`${f}|${ref}`]?.[0] != null);
   const rows = others
     .map((f) => ({ f, t: sens.taux[`${f}|${ref}`], n: sens.n[`${f}|${ref}`] }))

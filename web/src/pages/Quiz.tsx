@@ -1,9 +1,12 @@
 import React from "react";
-import { IS_ARTIFACT, useAsync, useCore } from "../lib/data";
+import { IS_ARTIFACT, loadDetail, useAsync, useCore } from "../lib/data";
 import { fmtDate, fmtInt, fmtPct } from "../lib/format";
 import { href } from "../lib/router";
 import { famColor } from "../lib/theme";
 import {
+  BLOCK_SIZE,
+  SOLID_PERCENT,
+  STAGE_MIN,
   decodeAnswers,
   drawNext,
   encodeAnswers,
@@ -12,22 +15,24 @@ import {
   loadQuiz,
   loadSaved,
   measureAdopted,
+  profileStage,
   ranked,
   remaining,
   save,
   scoreAll,
-  tiedWithLeader,
+  solidity,
+  solidityPercent,
   wilson,
   type Answer,
   type FamScore,
   type QuizData,
   type QuizQuestion,
   type SavedQuiz,
+  type Stage,
 } from "../lib/quiz";
 import { ErrorBox, FamChip, FamDot, Loading, useToast } from "../components/ui";
 
-const FIRST = 20;
-const MORE = 10;
+const BLOCK = BLOCK_SIZE;
 const KIND_LABEL: Record<string, string> = {
   ensemble: "Vote sur l'ensemble du texte",
   amendement: "Vote sur un amendement",
@@ -35,6 +40,23 @@ const KIND_LABEL: Record<string, string> = {
   declaration: "Vote sur une déclaration du gouvernement",
   resolution: "Vote sur une résolution",
 };
+
+/** Étapes du profil : des repères de précision, pas des récompenses. */
+const STAGES: { id: Stage; label: string; rule: string }[] = [
+  { id: "esquisse", label: "Profil esquissé", rule: `${STAGE_MIN.esquisse} réponses` },
+  { id: "affine", label: "Profil affiné", rule: `${STAGE_MIN.affine} réponses` },
+  { id: "solide", label: "Profil solide", rule: `dès ${STAGE_MIN.solide} réponses, groupe en tête dans au moins ${SOLID_PERCENT} % des tirages` },
+];
+const STAGE_LABEL: Record<Stage, string> = { esquisse: "Profil esquissé", affine: "Profil affiné", solide: "Profil solide" };
+
+type Sol = ReturnType<typeof solidity>;
+
+/** « A », « A et B », « A, B et C ». */
+function joinFr(xs: string[]): string {
+  return xs.length < 2 ? (xs[0] ?? "") : `${xs.slice(0, -1).join(", ")} et ${xs[xs.length - 1]}`;
+}
+
+const officialUrl = (q: QuizQuestion) => `https://www.assemblee-nationale.fr/dyn/${q.leg}/scrutins/${q.num}`;
 
 export function Quiz({ code }: { code?: string }) {
   const st = useAsync(loadQuiz, []);
@@ -63,6 +85,8 @@ function Game({ data }: { data: QuizData }) {
   const [started, setStarted] = React.useState(false);
   const [reveal, setReveal] = React.useState<string | null>(null);
   const live = React.useRef<HTMLDivElement>(null);
+  const answers = saved?.answers;
+  const sol = React.useMemo(() => (answers ? solidity(data, answers) : null), [data, answers]);
 
   const update = React.useCallback((s: SavedQuiz | null) => {
     setSaved(s);
@@ -70,7 +94,7 @@ function Game({ data }: { data: QuizData }) {
   }, []);
 
   const start = (themes: string[] | null) => {
-    const order = drawNext(data, [], FIRST, themes);
+    const order = drawNext(data, [], BLOCK, themes);
     update({ version: data.version, order, answers: {}, target: order.length, themes });
     setReveal(null);
     setStarted(true);
@@ -82,6 +106,7 @@ function Game({ data }: { data: QuizData }) {
   }
 
   const answeredCount = saved.order.filter((id) => id in saved.answers).length;
+  const answered = Object.values(saved.answers).filter((a) => a !== "S").length;
   const current = reveal ?? saved.order.find((id) => !(id in saved.answers)) ?? null;
   const scores = scoreAll(data, saved.answers);
   const byId = new Map(data.questions.map((q) => [q.id, q]));
@@ -93,15 +118,19 @@ function Game({ data }: { data: QuizData }) {
     setReveal(current);
     const q = byId.get(current)!;
     const same = a === "S" ? 0 : data.families.filter((_, i) => famPos(q, i) === a).length;
-    if (live.current) live.current.textContent = a === "S" ? "Question passée." : `Réponse enregistrée. ${same} groupes ont voté comme toi.`;
+    if (live.current) live.current.textContent = a === "S" ? "Question passée." : `Réponse enregistrée. ${same} groupes ont voté comme vous.`;
   };
   const next = () => {
     setReveal(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const more = () => {
-    const add = drawNext(data, saved.order, MORE, saved.themes);
-    update({ ...saved, order: [...saved.order, ...add], target: saved.target + add.length });
+  /** Bloc suivant ; `themes` = null pour élargir à tous les thèmes. */
+  const more = (themes: string[] | null) => {
+    const add = drawNext(data, saved.order, BLOCK, themes);
+    if (!add.length) return;
+    update({ ...saved, themes, order: [...saved.order, ...add], target: saved.order.length + add.length });
+    setReveal(null);
+    window.scrollTo({ top: 0 });
   };
   const restart = () => {
     update(null);
@@ -111,9 +140,19 @@ function Game({ data }: { data: QuizData }) {
   };
 
   if (!current) {
+    const left = remaining(data, saved.order, saved.themes);
+    const leftAll = saved.themes ? remaining(data, saved.order, null) : left;
     return (
       <div className="wrap page">
-        <Results data={data} order={saved.order} answers={saved.answers} canMore={remaining(data, saved.order, saved.themes) > 0} onMore={more} onRestart={restart} />
+        <Results
+          data={data}
+          order={saved.order}
+          answers={saved.answers}
+          rest={{ left, leftAll, restricted: !!saved.themes }}
+          onMore={() => more(saved.themes)}
+          onWiden={() => more(null)}
+          onRestart={restart}
+        />
       </div>
     );
   }
@@ -133,10 +172,11 @@ function Game({ data }: { data: QuizData }) {
           )}
           <div ref={live} className="sr-only" aria-live="polite" />
         </div>
-        <aside className="quiz-side" aria-label="Ton profil">
+        <aside className="quiz-side" aria-label="Votre profil">
           <div className="card stack">
-            <h2 className="card-title">Ton profil se précise</h2>
-            <Profile scores={scores} answered={Object.values(saved.answers).filter((a) => a !== "S").length} />
+            <h2 className="card-title">Votre profil se précise</h2>
+            <Profile scores={scores} answered={answered} />
+            {sol && <SolidityNote sol={sol} answered={answered} />}
           </div>
         </aside>
       </div>
@@ -152,6 +192,7 @@ function Intro({ data, saved, onStart, onResume }: { data: QuizData; saved: Save
   const [sel, setSel] = React.useState<Set<string>>(() => new Set(themes.map((t) => t.id)));
   const all = sel.size === themes.length;
   const pool = data.questions.filter((q) => !q.retired && sel.has(q.theme)).length;
+  const total = data.questions.filter((q) => !q.retired).length;
   const toggle = (id: string) =>
     setSel((s) => {
       const n = new Set(s);
@@ -166,25 +207,30 @@ function Intro({ data, saved, onStart, onResume }: { data: QuizData; saved: Save
     <div className="wrap page">
       <section className="hero quiz-hero">
         <span className="eyebrow">Le quiz · de vrais votes de l'Assemblée nationale</span>
-        <h1>Les promesses, c'est bien. Les actes, c'est mieux.</h1>
+        <h1>
+          Les promesses, c'est bien. <mark>Les actes</mark>, c'est mieux.
+        </h1>
         <p className="lead">
-          Vote comme un député sur {Math.min(FIRST, pool)} textes réellement soumis à l'Assemblée depuis 2022. Après chaque réponse, découvre comment chaque groupe
-          a voté. À la fin, tu sais quels groupes ont le plus souvent voté comme toi.
+          Dites pour ou contre, comme les députés, sur {Math.min(BLOCK, pool || total)} textes réellement soumis à l'Assemblée depuis 2022. Après chaque réponse,
+          découvrez comment chaque groupe a voté. Ensuite, affinez votre profil par blocs de {BLOCK} questions.
         </p>
       </section>
 
       <div className="quiz-steps">
         <div className="card">
-          <strong>1. Tu votes</strong>
-          <p className="small ink2">Pour, contre, ou tu passes. Sur téléphone, fais glisser la carte à droite ou à gauche.</p>
+          <strong>1. Vous dites pour ou contre</strong>
+          <p className="small ink2">Sans avis, passez la question. Sur téléphone, faites glisser la carte à droite ou à gauche.</p>
         </div>
         <div className="card">
-          <strong>2. Tu découvres le vote réel</strong>
+          <strong>2. Vous découvrez le vote réel</strong>
           <p className="small ink2">Groupe par groupe, avec le résultat officiel et le lien vers le scrutin.</p>
         </div>
         <div className="card">
-          <strong>3. Ton profil s'affine</strong>
-          <p className="small ink2">Plus tu réponds, plus la marge d'incertitude se resserre.</p>
+          <strong>3. Votre profil s'affine</strong>
+          <p className="small ink2">
+            Par blocs de {BLOCK} questions, jusqu'à {total} : esquissé, puis affiné, puis solide quand le groupe en tête ne tient plus à quelques réponses.
+            Votre profil reste sur votre appareil : revenez l'affiner quand vous voulez.
+          </p>
         </div>
       </div>
 
@@ -208,7 +254,7 @@ function Intro({ data, saved, onStart, onResume }: { data: QuizData; saved: Save
           </div>
           <div className="row" style={{ gap: "0.6rem", flexWrap: "wrap", alignItems: "center" }}>
             <button type="button" className="btn primary big" disabled={pool === 0} onClick={() => onStart(all ? null : [...sel])}>
-              {unfinished ? "Nouvelle partie" : "Commencer"} · {Math.min(FIRST, pool)} questions
+              {unfinished ? "Nouvelle partie" : "Commencer"} · {Math.min(BLOCK, pool)} questions
             </button>
             {unfinished && (
               <button type="button" className="btn big" onClick={onResume}>
@@ -217,8 +263,9 @@ function Intro({ data, saved, onStart, onResume }: { data: QuizData; saved: Save
             )}
           </div>
           <p className="small muted">
-            Questions tirées au hasard parmi {data.questions.filter((q) => !q.retired).length}, en couvrant tous les thèmes choisis. Tes réponses restent sur ton
-            appareil : rien n'est envoyé. Le quiz compare tes réponses à des votes passés ; il ne dit pas pour qui voter. <a href={href({ page: "methode" }) + ""}>Méthode</a>
+            Questions tirées au sort parmi {total} : un thème différent à chaque question d'un bloc tant que possible, et plus souvent les votes où les groupes se sont
+            le plus partagés. Vos réponses restent sur votre appareil : rien n'est envoyé. Le quiz compare vos réponses à des votes passés ; il ne dit pas pour qui
+            voter. <a href={href({ page: "methode" })}>Méthode</a>
           </p>
         </div>
       </section>
@@ -243,6 +290,9 @@ function SwipeCard({ q, onAnswer }: { q: QuizQuestion; onAnswer: (a: Answer) => 
   const [dx, setDx] = React.useState(0);
   const [dragging, setDragging] = React.useState(false);
   const [leaving, setLeaving] = React.useState<Answer | null>(null);
+  const [texte, setTexte] = React.useState(false);
+  const texteOuvert = React.useRef(false);
+  texteOuvert.current = texte;
   const theme = core.meta.themes.find((t) => t.id === q.theme);
 
   const commit = React.useCallback(
@@ -261,6 +311,7 @@ function SwipeCard({ q, onAnswer }: { q: QuizQuestion; onAnswer: (a: Answer) => 
   React.useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
+      if (texteOuvert.current) return;
       if (t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA")) return;
       if (e.key === "ArrowRight") commit("P");
       else if (e.key === "ArrowLeft") commit("C");
@@ -331,9 +382,16 @@ function SwipeCard({ q, onAnswer }: { q: QuizQuestion; onAnswer: (a: Answer) => 
           </span>
         </div>
         <h2 className="quiz-q">{q.q}</h2>
-        <p className="quiz-ctx">{q.ctx}</p>
+        {/* Contexte : date, texte et ce qui change ; jamais le résultat ni le vote des groupes (révélés après la réponse). */}
+        <p className="quiz-ctx">
+          <span className="quiz-ctx-label">Contexte</span>
+          {q.ctx}
+        </p>
+        <button type="button" className="quiz-plus" onClick={() => setTexte(true)}>
+          Lire le texte voté
+        </button>
       </div>
-      <div className="quiz-buttons" role="group" aria-label="Ta réponse">
+      <div className="quiz-buttons" role="group" aria-label="Votre réponse">
         <button type="button" className="vote-btn contre" onClick={() => commit("C")} aria-keyshortcuts="ArrowLeft">
           <span aria-hidden="true">✕</span> Contre
         </button>
@@ -344,14 +402,144 @@ function SwipeCard({ q, onAnswer }: { q: QuizQuestion; onAnswer: (a: Answer) => 
           <span aria-hidden="true">✓</span> Pour
         </button>
       </div>
-      <p className="quiz-hint small muted">Glisse la carte, ou utilise les flèches ← → du clavier (↓ pour passer).</p>
+      <p className="quiz-hint small muted">Faites glisser la carte, ou utilisez les flèches ← → du clavier (↓ pour passer).</p>
+      {texte && (
+        <TexteComplet
+          q={q}
+          onClose={() => setTexte(false)}
+          onAnswer={(a) => {
+            setTexte(false);
+            commit(a);
+          }}
+        />
+      )}
     </div>
+  );
+}
+
+/** Le texte complet d'une question, avant de répondre : le résumé, ce que propose le texte, l'exposé de ses auteurs et
+ *  le lien vers l'Assemblée, dans un panneau qu'on referme (Échap, ✕, clic à côté) ou d'où l'on répond directement.
+ *  Le site ne nomme l'auteur qu'après la réponse, comme le vote des groupes ; l'exposé publié, lui, peut le nommer. */
+function TexteComplet({ q, onClose, onAnswer }: { q: QuizQuestion; onClose: () => void; onAnswer: (a: Answer) => void }) {
+  const core = useCore();
+  const ref = React.useRef<HTMLDialogElement>(null);
+  const detail = useAsync(() => loadDetail(core, q.leg, q.num), [q.uid]);
+  React.useEffect(() => {
+    const d = ref.current;
+    if (d && !d.open) d.showModal();
+    return () => {
+      if (d?.open) d.close();
+    };
+  }, []);
+  const amdt = detail.data?.amdt;
+  const dossier = detail.data?.dossier;
+  const abrege = (x: string) => /…$|\.\.\.$/.test(x.trim());
+  return (
+    <dialog
+      ref={ref}
+      className="texte-complet"
+      aria-labelledby={`tc-${q.id}`}
+      onClose={onClose}
+      onClick={(e) => {
+        if (e.target === ref.current) onClose();
+      }}
+    >
+      <div className="tc-tete">
+        <span className="eyebrow">
+          {fmtDate(q.date)} · {KIND_LABEL[q.kind] ?? "Scrutin public"}
+        </span>
+        <button type="button" className="tc-fermer" onClick={onClose} aria-label="Fermer et revenir à la question">
+          ✕
+        </button>
+      </div>
+      <div className="tc-corps stack">
+        <h2 id={`tc-${q.id}`} className="quiz-q">
+          {q.q}
+        </h2>
+        <p className="quiz-ctx">
+          <span className="quiz-ctx-label">En bref</span>
+          {q.ctx}
+        </p>
+        {detail.loading && <Loading label="Chargement du texte…" />}
+        {detail.error && (
+          <p className="muted">
+            Le texte voté n'a pas pu être chargé ici. Il reste consultable sur{" "}
+            <a href="https://www.assemblee-nationale.fr/" target="_blank" rel="noopener noreferrer">
+              le site de l'Assemblée nationale ↗
+            </a>
+            .
+          </p>
+        )}
+        {amdt ? (
+          <>
+            {amdt.dispositif && (
+              <section className="stack tc-bloc">
+                <h3 className="card-title">Ce que propose l'amendement</h3>
+                {amdt.article && (
+                  <p className="small muted">
+                    Il porte sur : {amdt.article.toLowerCase()} du {q.texte}.
+                  </p>
+                )}
+                <p className="quote">{amdt.dispositif}</p>
+              </section>
+            )}
+            {amdt.expose ? (
+              <section className="stack tc-bloc">
+                <h3 className="card-title">Pourquoi, selon ses auteurs</h3>
+                <p className="small muted">Leur argumentaire, tel qu'ils l'ont publié : ce n'est pas celui du site, et les autres groupes n'en publient pas.</p>
+                <p className="quote">{amdt.expose}</p>
+              </section>
+            ) : (
+              <p className="muted">Pas d'exposé des motifs publié pour cet amendement.</p>
+            )}
+            <p className="small">
+              <a href={`https://www.assemblee-nationale.fr/dyn/${q.leg}/amendements/${amdt.uid}`} target="_blank" rel="noopener noreferrer">
+                {abrege(amdt.expose) || abrege(amdt.dispositif) ? "Lire l'amendement en entier" : "L'amendement"} sur le site de l'Assemblée ↗
+              </a>{" "}
+              <span className="muted">(la page indique aussi son auteur et le résultat du vote)</span>
+            </p>
+          </>
+        ) : (
+          detail.data && (
+            <>
+              <section className="stack tc-bloc">
+                <h3 className="card-title">Le texte voté</h3>
+                <p>{q.texte.charAt(0).toUpperCase() + q.texte.slice(1)}.</p>
+              </section>
+              {dossier && (
+                <p className="small">
+                  <a href={`https://www.assemblee-nationale.fr/dyn/${q.leg}/dossiers/${dossier}`} target="_blank" rel="noopener noreferrer">
+                    Le dossier législatif sur le site de l'Assemblée ↗
+                  </a>{" "}
+                  <span className="muted">(il indique aussi le résultat du vote)</span>
+                </p>
+              )}
+            </>
+          )
+        )}
+        <p className="note">
+          Le site n'affiche l'auteur et le vote de chaque groupe qu'après votre réponse, pour que vous répondiez sur le fond ; l'exposé des auteurs, lui, peut
+          les nommer. Les extraits sont ceux publiés par l'Assemblée nationale, parfois abrégés.
+        </p>
+      </div>
+      <div className="quiz-buttons tc-pied" role="group" aria-label="Votre réponse">
+        <button type="button" className="vote-btn contre" onClick={() => onAnswer("C")}>
+          <span aria-hidden="true">✕</span> Contre
+        </button>
+        <button type="button" className="vote-btn passer" onClick={() => onAnswer("S")}>
+          Passer
+        </button>
+        <button type="button" className="vote-btn pour" onClick={() => onAnswer("P")}>
+          <span aria-hidden="true">✓</span> Pour
+        </button>
+      </div>
+    </dialog>
   );
 }
 
 /* ================================================================== révélation */
 
-const REL_LABEL: Record<string, string> = { same: "comme toi", opp: "l'inverse de toi", abst: "abstention", split: "groupe partagé" };
+const REL_LABEL: Record<string, string> = { same: "comme vous", opp: "à l'inverse de vous", abst: "abstention", split: "groupe partagé" };
 
 function relation(p: string, a: Answer): string {
   if (p === "A") return "abst";
@@ -368,6 +556,8 @@ function Reveal({ data, q, a, onNext, last }: { data: QuizData; q: QuizQuestion;
     const onKey = (e: KeyboardEvent) => {
       const t = e.target as HTMLElement | null;
       if (t && (t.tagName === "INPUT" || t.tagName === "SELECT" || t.tagName === "TEXTAREA")) return;
+      // Entrée sur un lien ou un bouton : son action à lui (ouvrir le scrutin, déplier le détail…)
+      if (e.key === "Enter" && t?.closest("a, button, summary")) return;
       if (e.key === "Enter" || e.key === "ArrowRight") {
         e.preventDefault();
         onNext();
@@ -403,11 +593,17 @@ function Reveal({ data, q, a, onNext, last }: { data: QuizData; q: QuizQuestion;
     <div className="card reveal stack" role="region" aria-label="Le vote réel">
       <div className="reveal-head">
         <h2 ref={head} tabIndex={-1} className="card-title">
-          {a === "S" ? "Question passée" : <>Tu as voté <span className={`answer-badge ${a === "P" ? "pour" : "contre"}`}>{a === "P" ? "pour" : "contre"}</span></>}
+          {a === "S" ? (
+            "Question passée"
+          ) : (
+            <>
+              Votre réponse : <span className={`answer-badge ${a === "P" ? "pour" : "contre"}`}>{a === "P" ? "pour" : "contre"}</span>
+            </>
+          )}
         </h2>
         {a !== "S" && (
           <p className="ink2">
-            {nSame === 0 ? "Aucun groupe n'a voté comme toi." : nSame === 1 ? "Un seul groupe a voté comme toi." : `${nSame} groupes ont voté comme toi.`}
+            {nSame === 0 ? "Aucun groupe n'a voté comme vous." : nSame === 1 ? "Un seul groupe a voté comme vous." : `${nSame} groupes ont voté comme vous.`}
           </p>
         )}
       </div>
@@ -455,9 +651,15 @@ function Reveal({ data, q, a, onNext, last }: { data: QuizData; q: QuizQuestion;
         {q.inv && <p className="muted">Les positions ci-dessus sont celles des groupes sur la mesure décrite : voter contre l'amendement de suppression, c'était la soutenir.</p>}
       </details>
       <div className="reveal-actions">
-        <a className="btn" href={href({ page: "scrutin", leg: q.leg, num: q.num })}>
-          Voir le vote de chaque député
-        </a>
+        <div className="reveal-links">
+          <a className="btn" href={officialUrl(q)} target="_blank" rel="noopener noreferrer">
+            Voir le scrutin officiel <span aria-hidden="true">↗</span>
+            <span className="sr-only"> sur le site de l'Assemblée nationale (nouvel onglet)</span>
+          </a>
+          <a className="btn" href={href({ page: "scrutin", leg: q.leg, num: q.num })}>
+            Voir le vote de chaque député
+          </a>
+        </div>
         <button type="button" className="btn primary big" onClick={onNext}>
           {last ? "Voir mon résultat" : "Question suivante"} →
         </button>
@@ -492,7 +694,7 @@ function MiniPodium({ scores }: { scores: FamScore[] }) {
   if (!r.length) return null;
   return (
     <div className="mini-podium small" aria-hidden="true">
-      <span className="muted">Le plus proche de toi :</span>
+      <span className="muted">Le plus proche de vous :</span>
       {r.map((s) => (
         <span key={s.fam} className="chip">
           <FamDot id={s.fam} />
@@ -504,10 +706,8 @@ function MiniPodium({ scores }: { scores: FamScore[] }) {
 }
 
 function Profile({ scores, answered, big = false }: { scores: FamScore[]; answered: number; big?: boolean }) {
-  const core = useCore();
   const r = ranked(scores);
-  if (!r.length) return <p className="small muted">Réponds à une première question : ton profil apparaîtra ici.</p>;
-  const tied = tiedWithLeader(r);
+  if (!r.length) return <p className="small muted">Répondez à une première question : votre profil apparaîtra ici.</p>;
   return (
     <div className="stack" style={{ gap: "0.6rem" }}>
       <ol className={`profile${big ? " big" : ""}`}>
@@ -523,36 +723,120 @@ function Profile({ scores, answered, big = false }: { scores: FamScore[]; answer
         ))}
       </ol>
       <p className="small muted">
-        {answered < 8
-          ? "Encore peu de réponses : le classement va beaucoup bouger."
-          : tied.length
-            ? `Avec ${answered} réponses, ${tied
-                .slice(0, 4)
-                .map((t) => core.famById[t.fam]?.short)
-                .join(", ")}${tied.length > 4 ? "…" : ""} ${tied.length > 1 ? "restent" : "reste"} dans la marge d'incertitude du premier. Réponds à plus de questions pour départager.`
-            : `Avec ${answered} réponses, l'écart avec le premier dépasse la marge d'incertitude.`}{" "}
-        La zone colorée montre la marge (90 %).
+        {answered < STAGE_MIN.esquisse ? "Encore peu de réponses : le classement va beaucoup bouger. " : ""}
+        La zone colorée montre la marge d'incertitude de chaque pourcentage (90 %).
       </p>
     </div>
   );
 }
 
+/** Phrase de solidité : « Le groupe en tête le reste dans 82 % des tirages de vos réponses. » */
+function soliditySentence(sol: Sol, whose: string): string | null {
+  if (sol.share == null) return null;
+  const pct = fmtPct(solidityPercent(sol.share) / 100);
+  return sol.top.length > 1
+    ? `Les groupes à égalité en tête le restent dans ${pct} des tirages de ${whose}.`
+    : `Le groupe en tête le reste dans ${pct} des tirages de ${whose}.`;
+}
+
+/** Pendant la partie, sous le profil : palier atteint et solidité, à partir de 10 réponses. */
+function SolidityNote({ sol, answered }: { sol: Sol; answered: number }) {
+  const stage = profileStage(answered, sol.share);
+  const sentence = soliditySentence(sol, "vos réponses");
+  if (!stage || !sentence) return null;
+  return (
+    <p className="small quiz-solidity">
+      <strong>{STAGE_LABEL[stage]}</strong> · {sentence}
+    </p>
+  );
+}
+
+/** Les trois étapes du profil, l'étape actuelle mise en évidence. */
+function StageSteps({ stage }: { stage: Stage | null }) {
+  const cur = stage ? STAGES.findIndex((s) => s.id === stage) : -1;
+  return (
+    <ol className="quiz-stages" aria-label="Étapes du profil">
+      {STAGES.map((s, i) => (
+        <li key={s.id} className={i < cur ? "done" : i === cur ? "current" : "todo"} aria-current={i === cur ? "step" : undefined}>
+          <span className="quiz-stage-name">
+            {s.label}
+            {i < cur && <span className="sr-only"> (étape franchie)</span>}
+          </span>
+          <span className="quiz-stage-rule">{s.rule}</span>
+        </li>
+      ))}
+    </ol>
+  );
+}
+
 /* ================================================================== résultats */
+
+interface Rest {
+  /** Questions restantes dans les thèmes choisis. */
+  left: number;
+  /** Questions restantes, tous thèmes confondus. */
+  leftAll: number;
+  restricted: boolean;
+}
+
+/** Après chaque bloc : invitation à affiner le profil avec le bloc suivant. */
+function BlockInvite({ asked, rest, onMore, onWiden }: { asked: number; rest: Rest; onMore?: () => void; onWiden?: () => void }) {
+  const { left, leftAll, restricted } = rest;
+  const scope = restricted ? " des thèmes choisis" : "";
+  let text: React.ReactNode;
+  let action: React.ReactNode = null;
+  if (left > 0) {
+    const what = left >= BLOCK ? `${BLOCK} questions de plus` : left === 1 ? `la dernière question${scope}` : `les ${left} dernières questions${scope}`;
+    const label = left >= BLOCK ? `${BLOCK} questions de plus` : left === 1 ? "La dernière question" : `Les ${left} dernières questions`;
+    text = (
+      <>
+        Ces {asked} questions ont été tirées au sort : affinez votre profil avec {what}. Il reste sur votre appareil : vous pouvez aussi revenir le compléter plus tard.
+      </>
+    );
+    action = (
+      <button type="button" className="btn primary big" onClick={onMore}>
+        {label} →
+      </button>
+    );
+  } else if (leftAll > 0) {
+    const n = Math.min(BLOCK, leftAll);
+    text = (
+      <>
+        Vous avez répondu à toutes les questions des thèmes choisis. Pour affiner votre profil, ajoutez les autres thèmes : {n} question{n > 1 ? "s" : ""} de plus.
+      </>
+    );
+    action = (
+      <button type="button" className="btn primary big" onClick={onWiden}>
+        Ajouter les autres thèmes →
+      </button>
+    );
+  } else {
+    text = <>Vous avez parcouru les {asked} questions du quiz : votre profil ne peut plus s'affiner ici. Chaque vote reste détaillé plus bas, avec le lien vers son scrutin.</>;
+  }
+  return (
+    <section className="card quiz-invite" aria-label="Affiner votre profil">
+      <p>{text}</p>
+      {action}
+    </section>
+  );
+}
 
 function Results({
   data,
   order,
   answers,
-  canMore,
+  rest,
   onMore,
+  onWiden,
   onRestart,
   shared = false,
 }: {
   data: QuizData;
   order: string[];
   answers: Record<string, Answer>;
-  canMore: boolean;
+  rest?: Rest;
   onMore?: () => void;
+  onWiden?: () => void;
   onRestart?: () => void;
   shared?: boolean;
 }) {
@@ -560,24 +844,32 @@ function Results({
   const scores = scoreAll(data, answers);
   const r = ranked(scores);
   const answered = Object.values(answers).filter((a) => a !== "S").length;
-  const tied = tiedWithLeader(r);
+  const sol = React.useMemo(() => solidity(data, answers), [data, answers]);
+  const stage = profileStage(answered, sol.share);
   const lead = r[0];
+  const tops = lead ? sol.topFams : [];
+  const tie = tops.length > 1;
+  /** Nombre de votes comptés pour chaque groupe à égalité (un groupe créé en 2024 en a moins). */
+  const tieVotes = [...new Set(tops.map((f) => scores.find((s) => s.fam === f)?.n ?? 0))].sort((x, y) => y - x);
+  const name = (f: string) => core.famById[f]?.name ?? f;
+  const whose = shared ? "ces réponses" : "vos réponses";
+  const sentence = answered >= STAGE_MIN.esquisse ? soliditySentence(sol, whose) : null;
   const [toast, say] = useToast();
   const [fallback, setFallback] = React.useState<string | null>(null);
   const byId = new Map(data.questions.map((q) => [q.id, q]));
   const asked = order.map((id) => byId.get(id)!).filter((q) => q && q.id in answers);
 
   const share = () => {
-    const leadName = lead ? core.famById[lead.fam]?.name : "";
+    const who = tie ? `des groupes ${joinFr(tops.map(name))}` : lead ? `du groupe ${name(lead.fam)}` : "";
     const text = lead
-      ? `Au quiz « Je vote qui ? », mes réponses à ${answered} vrais votes de l'Assemblée ressemblent à ${fmtPct(lead.rate)} aux votes du groupe ${leadName}. Et toi ?`
+      ? `Au quiz « Je vote qui ? », mes réponses à ${answered} vrais votes de l'Assemblée ressemblent à ${fmtPct(lead.rate)} aux votes ${who}. Et vous ?`
       : "Le quiz « Je vote qui ? » : de vrais votes de l'Assemblée nationale.";
     const code = encodeAnswers(data, order, answers);
     const url = IS_ARTIFACT ? "" : `${window.location.origin}${window.location.pathname}#quiz-${code}`;
     const full = url ? `${text}\n${url}` : text;
     try {
       navigator.clipboard.writeText(full).then(
-        () => say(url ? "Lien de tes résultats copié" : "Texte copié"),
+        () => say(url ? "Lien de vos résultats copié" : "Texte copié"),
         () => setFallback(full),
       );
     } catch {
@@ -595,32 +887,57 @@ function Results({
     return s;
   };
 
+  const stageText =
+    stage === "solide"
+      ? tie
+        ? "Les groupes à égalité en tête ne dépendent plus de quelques réponses, mais ces réponses ne les départagent pas. Cela reste une tendance, pas un verdict."
+        : "Le groupe en tête ne dépend plus de quelques réponses. Cela reste une tendance, pas un verdict."
+      : stage === "affine"
+        ? answered < STAGE_MIN.solide
+          ? `La tendance se précise. On ne parle de profil solide qu'à partir de ${STAGE_MIN.solide} réponses.`
+          : `La tendance se précise, mais ${tie ? "la tête du classement dépend" : "le groupe en tête dépend"} encore de quelques réponses : il faudrait ${
+              tie ? "qu'elle reste la même" : "qu'il le reste"
+            } dans au moins ${SOLID_PERCENT} % des tirages pour parler de profil solide.`
+        : stage === "esquisse"
+          ? "Une première tendance, qui peut encore beaucoup changer."
+          : answered === 0
+            ? `Aucune réponse pour l'instant : le profil s'esquisse à partir de ${STAGE_MIN.esquisse} réponses.`
+            : `Le profil s'esquisse à partir de ${STAGE_MIN.esquisse} réponses (${answered} pour l'instant) : avant, le classement change trop d'une réponse à l'autre pour mesurer sa solidité.`;
+
   return (
     <div className="stack" style={{ gap: "1.4rem" }}>
       <section className="hero quiz-hero">
-        <span className="eyebrow">{shared ? "Résultats partagés" : "Ton résultat"} · {answered} votes</span>
+        <span className="eyebrow">
+          {shared ? "Résultats partagés" : "Votre résultat"} · {answered} réponse{answered > 1 ? "s" : ""}
+          {stage ? ` · ${STAGE_LABEL[stage]}` : ""}
+        </span>
         {lead ? (
           <h1>
-            {shared ? "Ces réponses ressemblent" : "Tes réponses ressemblent"} le plus aux votes du groupe{" "}
-            <span className="lead-fam" style={{ borderColor: famColor(lead.fam) }}>
-              {core.famById[lead.fam]?.name}
-            </span>
+            {shared ? "Ces réponses ressemblent" : "Vos réponses ressemblent"} le plus aux votes {tie ? "des groupes" : "du groupe"}{" "}
+            {tops.map((f, i) => (
+              <React.Fragment key={f}>
+                {i > 0 && (i === tops.length - 1 ? " et " : ", ")}
+                <span className="lead-fam" style={{ borderColor: famColor(f) }}>
+                  {name(f)}
+                </span>
+              </React.Fragment>
+            ))}
+            {tie ? ", à égalité" : ""}
           </h1>
         ) : (
           <h1>Aucune réponse pour l'instant</h1>
         )}
         {lead && (
           <p className="lead">
-            <strong className="num">{fmtPct(lead.rate)}</strong> d'accord sur {lead.n} votes
-            {tied.length
-              ? ` — mais ${tied
-                  .slice(0, 3)
-                  .map((t) => core.famById[t.fam]?.short)
-                  .join(", ")} ${tied.length > 1 ? "sont" : "est"} statistiquement au coude-à-coude.`
-              : "."}
+            <strong className="num">{fmtPct(lead.rate)}</strong> d'accord {tie ? `avec chacun (sur ${joinFr(tieVotes.map(String))} votes)` : `sur ${lead.n} votes`}.{" "}
+            {sentence
+              ? `${sentence}${answered < STAGE_MIN.solide ? ` Avant ${STAGE_MIN.solide} réponses, ce chiffre surestime la stabilité du classement.` : ""}`
+              : "Encore trop peu de réponses pour dire si ce classement est solide."}
           </p>
         )}
       </section>
+
+      {!shared && rest && <BlockInvite asked={order.length} rest={rest} onMore={onMore} onWiden={onWiden} />}
 
       <div className="grid-2 quiz-results">
         <div className="card stack">
@@ -628,53 +945,72 @@ function Results({
           <Profile scores={scores} answered={answered} big />
         </div>
         <div className="card stack">
-          <h2 className="card-title">Ce que ce résultat veut dire</h2>
-          <ul className="small ink2 tight-list">
-            <li>Il compare tes réponses aux votes réels des groupes à l'Assemblée nationale, pas à leurs programmes ni à leurs candidats.</li>
-            <li>Un groupe vote « pour » ou « contre » selon ce qu'a voté la majorité de ses députés présents ; une abstention compte pour un demi-accord.</li>
-            <li>
-              Avec {answered} réponses, la marge d'incertitude est d'environ ± {margin(answered)} points.
-              {canMore && !shared ? " Réponds à d'autres questions pour l'affiner." : ""}
-            </li>
-            <li>Chaque question renvoie au scrutin officiel : vérifie, et fais-toi ton avis.</li>
-          </ul>
-          <p className="small">
-            Ce quiz t'a été utile ? <a href={href({ page: "projet", section: "avis" })}>Dis-nous comment l'améliorer →</a>
-          </p>
-          <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
-            {shared ? (
-              <a className="btn primary big" href="#quiz">
-                Faire le quiz moi aussi
-              </a>
-            ) : (
-              <>
-                {canMore && (
-                  <button type="button" className="btn primary big" onClick={onMore}>
-                    Affiner : {MORE} questions de plus
-                  </button>
-                )}
-                <button type="button" className="btn big" onClick={share}>
-                  Partager
-                </button>
-                <button type="button" className="btn big" onClick={onRestart}>
-                  Recommencer
-                </button>
-              </>
-            )}
-          </div>
-          {fallback && (
-            <textarea className="input small" readOnly rows={3} value={fallback} ref={(el) => el?.select()} aria-label="Texte à copier" onBlur={() => setFallback(null)} />
-          )}
-          {toast}
+          <h2 className="card-title">{shared ? "Où en est ce profil" : "Où en est votre profil"}</h2>
+          <StageSteps stage={stage} />
+          <p className="small ink2">{stageText}</p>
+          <details className="howto">
+            <summary>Comment la solidité est-elle mesurée ?</summary>
+            <p>
+              On refait {fmtInt(sol.draws || 1000)} fois le classement en tirant au sort, avec remise, autant de questions qu'il y a de réponses : certaines
+              comptent deux fois, d'autres pas du tout. La solidité est la part de ces tirages où le groupe en tête reste en tête (une égalité compte pour une
+              part). Elle dit si le résultat tient à quelques questions ; ce n'est pas une probabilité d'appartenir à un groupe politique. Le tirage dépend des
+              réponses elles-mêmes : les mêmes réponses donnent toujours le même chiffre.
+            </p>
+            <p>
+              Profil solide : au moins {STAGE_MIN.solide} réponses et au moins {SOLID_PERCENT} % des tirages. Avec moins de réponses, ce calcul surestime la
+              stabilité. Les marges des pourcentages peuvent se chevaucher alors que le classement est solide : deux groupes qui ont voté pareil sur presque toutes
+              les questions ne se départagent que sur celles où ils diffèrent. <a href={href({ page: "methode" })}>Méthode</a>
+            </p>
+          </details>
         </div>
       </div>
+
+      <section className="card stack" aria-labelledby="h-qm">
+        <h2 id="h-qm" className="card-title">
+          Ce que ce résultat veut dire
+        </h2>
+        <ul className="small ink2 tight-list">
+          <li>Il compare {whose} aux votes réels des groupes à l'Assemblée nationale, pas à leurs programmes ni à leurs candidats.</li>
+          <li>
+            La position d'un groupe est le choix le plus fréquent parmi ses députés qui ont voté (pour, contre ou abstention). Même position : 1 point ; groupe
+            abstenu : ½ point.
+          </li>
+          <li>
+            Avec {answered} réponse{answered > 1 ? "s" : ""}, la marge d'incertitude de chaque pourcentage est d'environ ± {margin(answered)} points.
+            {rest && rest.leftAll > 0 && !shared ? " D'autres questions la resserreront." : ""}
+          </li>
+          <li>C'est une tendance, pas un verdict : le quiz ne dit pas pour qui voter.</li>
+          <li>Chaque question renvoie au scrutin officiel : vérifiez, et faites-vous votre avis.</li>
+        </ul>
+        <p className="small">
+          Ce quiz vous a été utile ? <a href={href({ page: "projet", section: "avis" })}>Dites-nous comment l'améliorer →</a>
+        </p>
+        <div className="row" style={{ gap: "0.5rem", flexWrap: "wrap" }}>
+          {shared ? (
+            <a className="btn primary big" href="#quiz">
+              Faire le quiz moi aussi
+            </a>
+          ) : (
+            <>
+              <button type="button" className="btn big" onClick={share}>
+                Partager
+              </button>
+              <button type="button" className="btn big" onClick={onRestart}>
+                Recommencer
+              </button>
+            </>
+          )}
+        </div>
+        {fallback && <textarea className="input small" readOnly rows={3} value={fallback} ref={(el) => el?.select()} aria-label="Texte à copier" onBlur={() => setFallback(null)} />}
+        {toast}
+      </section>
 
       {themes.length > 1 && top.length > 0 && (
         <section className="card stack" aria-labelledby="h-qt">
           <h2 id="h-qt" className="card-title">
             Par thème
           </h2>
-          <p className="small muted">Accord avec les groupes les plus proches de toi, thème par thème (nombre de votes entre parenthèses : souvent un ou deux, à lire avec prudence).</p>
+          <p className="small muted">Accord avec les groupes les plus proches, thème par thème (nombre de votes entre parenthèses : souvent un ou deux, à lire avec prudence).</p>
           <div className="scroll-x">
             <table className="table quiz-theme-table">
               <thead>
@@ -715,11 +1051,11 @@ function Results({
 
       <section className="card stack" aria-labelledby="h-qr">
         <h2 id="h-qr" className="card-title">
-          {shared ? "Les réponses, vote par vote" : "Tes réponses, vote par vote"}
+          {shared ? "Les réponses, vote par vote" : "Vos réponses, vote par vote"}
         </h2>
         <div className="row small muted" style={{ gap: "1rem", flexWrap: "wrap" }}>
           <span>
-            <i className="rel-sq same" /> a voté comme {shared ? "la réponse" : "toi"}
+            <i className="rel-sq same" /> a voté comme {shared ? "la réponse" : "vous"}
           </span>
           <span>
             <i className="rel-sq opp" /> l'inverse
@@ -774,7 +1110,7 @@ function margin(n: number): number {
 }
 
 function Shared({ data, code }: { data: QuizData; code: string }) {
-  const decoded = decodeAnswers(data, code);
+  const decoded = React.useMemo(() => decodeAnswers(data, code), [data, code]);
   if (!decoded) {
     return (
       <div className="wrap page">
@@ -789,7 +1125,7 @@ function Shared({ data, code }: { data: QuizData; code: string }) {
   }
   return (
     <div className="wrap page">
-      <Results data={data} order={decoded.order} answers={decoded.answers} canMore={false} shared />
+      <Results data={data} order={decoded.order} answers={decoded.answers} shared />
     </div>
   );
 }

@@ -4,7 +4,8 @@ import { fmtDate, fmtInt } from "../lib/format";
 import { href, type Route } from "../lib/router";
 
 export function BrandMark({ size = 30 }: { size?: number }) {
-  // Hémicycle stylisé : trois rangées de sièges, un siège surligné.
+  // Hémicycle stylisé : trois rangées de sièges, un siège jaune, plus gros pour se lire même en petit (même dessin que
+  // le logo des vidéos).
   const dots: { x: number; y: number; hl?: boolean }[] = [];
   [7, 11, 15].forEach((r, ri) => {
     const n = 4 + ri * 2;
@@ -16,7 +17,7 @@ export function BrandMark({ size = 30 }: { size?: number }) {
   return (
     <svg width={size} height={(size * 18) / 32} viewBox="0 0 32 18" aria-hidden="true">
       {dots.map((d, k) => (
-        <circle key={k} cx={d.x} cy={d.y} r={1.55} style={{ fill: d.hl ? "#f2c200" : "var(--ink)" }} />
+        <circle key={k} cx={d.x} cy={d.y} r={d.hl ? 2.8 : 1.55} style={{ fill: d.hl ? "#f2c200" : "var(--ink)" }} />
       ))}
     </svg>
   );
@@ -38,6 +39,7 @@ export function Header({ route }: { route: Route }) {
         <a className="brand" href={href({ page: "home" })}>
           <BrandMark />
           Je vote qui&nbsp;?
+          <span className="brand-edition" title="Édition de la présidentielle 2027">2027</span>
         </a>
         <nav className="nav" aria-label="Navigation principale">
           {NAV.map((n) => (
@@ -114,7 +116,8 @@ export function Footer() {
             <a href={href({ page: "methode" })}>Méthode et limites</a> · <a href={href({ page: "scrutins" })}>Tous les scrutins</a>
           </p>
           <p>
-            <a href={href({ page: "projet" })}>Le projet et nos engagements</a> · <a href={href({ page: "projet", section: "avis" })}>Donner mon avis</a>
+            <a href={href({ page: "projet" })}>Le projet et nos engagements</a> · <a href={href({ page: "projet", section: "avis" })}>Donner mon avis</a> ·{" "}
+            <a href={href({ page: "projet", section: "mentions" })}>Mentions légales</a>
           </p>
           <p>
             <a href="https://github.com/Fasterious/jevotequi" target="_blank" rel="noopener noreferrer">Code source</a> (logiciel libre, AGPL-3.0)

@@ -56,9 +56,11 @@ function pageTitle(route: Route, core: Core): string {
     case "methode":
       return `Méthode · ${base}`;
     case "quiz":
-      return route.code ? `Résultats du quiz · ${base}` : `Le quiz : et toi, tu aurais voté quoi ? · ${base}`;
+      return route.code ? `Résultats du quiz · ${base}` : `Le quiz : et vous, vous auriez voté quoi ? · ${base}`;
     case "projet":
       return `Le projet · ${base}`;
+    case "home":
+      return `${base} · Présidentielle 2027 : qui a voté quoi à l'Assemblée`;
     default:
       return base;
   }

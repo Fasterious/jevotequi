@@ -1,6 +1,6 @@
 {
- "generated": "2026-11-03T11:32:07Z",
- "methodVersion": "1.1.0",
+ "generated": "2026-11-03T13:37:48Z",
+ "methodVersion": "1.2.0",
  "sources": {
   "amo30": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "scrutins16": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/scrutins/Scrutins.json.zip",
@@ -224,7 +224,7 @@
    "id": "REN",
    "short": "Renaissance",
    "name": "Renaissance",
-   "desc": "Parti d'Emmanuel Macron : groupe Renaissance (2022-2024) puis Ensemble pour la République (EPR)",
+   "desc": "Groupe Renaissance (2022-2024) puis Ensemble pour la République (EPR)",
    "hasPosition": true,
    "groups": [
     {
@@ -251,7 +251,7 @@
    "id": "HOR",
    "short": "Horizons",
    "name": "Horizons",
-   "desc": "Parti d'Édouard Philippe : Horizons et apparentés puis Horizons & Indépendants",
+   "desc": "Groupe Horizons et apparentés (2022-2024) puis Horizons & Indépendants",
    "hasPosition": true,
    "groups": [
     {
@@ -304,8 +304,8 @@
   {
    "id": "UDR",
    "short": "UDR",
-   "name": "UDR (Ciotti)",
-   "desc": "Union des droites pour la République, groupe d'Éric Ciotti allié au RN (depuis 2024)",
+   "name": "Union des droites pour la République",
+   "desc": "Groupe Union des droites pour la République (depuis 2024)",
    "hasPosition": true,
    "groups": [
     {
