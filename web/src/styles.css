@@ -1571,6 +1571,112 @@ details.howto[open] summary {
   color: var(--pour);
   font-weight: 700;
 }
+/* L'accroche de l'accueil, centrée : la signature, la question, le quiz, puis le film en grand. */
+.landing {
+  display: grid;
+  gap: 2.2rem;
+  justify-items: center;
+  padding-block: 2.6rem 0.4rem;
+  text-align: center;
+}
+@media (min-width: 62rem) {
+  .landing {
+    padding-block: 3.6rem 0.6rem;
+  }
+}
+.landing-text {
+  display: grid;
+  gap: 1.15rem;
+  justify-items: center;
+}
+.landing h1 {
+  font-size: clamp(2.3rem, 6vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.04;
+}
+.landing .lead {
+  max-width: 46ch;
+}
+.landing .hero-trust {
+  justify-content: center;
+}
+.landing-film {
+  width: 100%;
+  max-width: 58rem;
+}
+.landing-film .video-pres {
+  max-width: none;
+}
+.pastille {
+  padding: 0.22rem 0.7rem;
+  border-radius: 999px;
+  background: var(--banner-bg);
+  color: var(--banner-fg);
+  font-family: var(--font-mono);
+  font-size: var(--step--2);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+/* Le surligné des films (moteur/atelier.mjs, surligner) : un aplat jaune plein, de la hauteur des capitales,
+   0,12 em de part et d'autre du mot, coins arrondis ; l'encre reste foncée, même en mode sombre. Avec `anime`, il se
+   pose de gauche à droite à l'arrivée, comme quand la voix dit « Les actes ». */
+.surligne {
+  position: relative;
+  isolation: isolate;
+  display: inline-block;
+  padding: 0;
+  background: none;
+  color: #12141a;
+}
+.surligne::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  inset: 0.23em -0.12em -0.05em;
+  border-radius: 0.12em;
+  background: #ffe15c;
+}
+.surligne.anime::before {
+  clip-path: inset(0 100% 0 0 round 0.12em);
+  animation: surligner 0.55s 0.5s cubic-bezier(0.3, 0.7, 0.4, 1) forwards;
+}
+@keyframes surligner {
+  to {
+    clip-path: inset(0 0 0 0 round 0.12em);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .surligne.anime::before {
+    animation: none;
+    clip-path: none;
+  }
+}
+.insecable {
+  white-space: nowrap;
+}
+/* Deux boutons de même largeur, côte à côte ; l'un sous l'autre sur téléphone. */
+.landing-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 31rem;
+}
+.landing-ctas .btn {
+  flex: 1 1 13rem;
+  justify-content: center;
+  padding: 0.75rem 1.35rem;
+}
+.landing-ctas .btn svg {
+  margin-left: -0.2rem;
+}
+.video-duree {
+  color: var(--muted);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
 .video-pres {
   display: grid;
   gap: 0.5rem;
@@ -1594,27 +1700,104 @@ details.howto[open] summary {
   background: none;
   cursor: pointer;
 }
+/* Le bouton de lecture : le point jaune de la marque, dans le coin laissé libre par l'affiche. */
 .video-lire {
   position: absolute;
-  inset: 0;
-  margin: auto;
-  width: 4.6rem;
-  height: 4.6rem;
+  right: 0.9rem;
+  bottom: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.35rem;
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--ink);
+  box-shadow: var(--shadow);
+  font-weight: 700;
+  transition: transform 0.15s ease;
+}
+.video-lire-rond {
   display: grid;
   place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
   border-radius: 50%;
-  background: rgba(18, 20, 26, 0.86);
-  color: #fcfcfb;
-  font-size: 1.6rem;
-  padding-left: 0.3rem;
-  transition: transform 0.15s ease;
+  background: #f2c200;
+  color: #12141a;
+}
+.video-lire-rond svg {
+  margin-left: 0.15rem;
+}
+.video-lire-texte {
+  padding-right: 0.6rem;
+}
+@media (max-width: 30rem) {
+  .video-lire {
+    right: 0.6rem;
+    bottom: 0.6rem;
+  }
+  .video-lire-texte {
+    display: none;
+  }
 }
 .video-affiche:hover .video-lire,
 .video-affiche:focus-visible .video-lire {
-  transform: scale(1.08);
+  transform: scale(1.05);
 }
-.video-section {
-  margin-top: 1.6rem;
+/* Comment ça marche : centré comme l'accroche, trois étapes numérotées d'un point jaune, puis l'appel au quiz. */
+.how .section-head {
+  justify-items: center;
+  margin-inline: auto;
+  text-align: center;
+}
+.how .section-head p {
+  text-wrap: balance;
+}
+.how .quiz-cta {
+  max-width: none;
+}
+/* Fin de l'accueil « vitrine » : les outils d'exploration commencent ici. */
+.explorer-head {
+  margin: 3.4rem 0 0.9rem;
+}
+.how-steps {
+  display: grid;
+  gap: 0.8rem;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: etape;
+}
+.how-steps li {
+  display: grid;
+  gap: 0.35rem;
+  align-content: start;
+  padding: 1.1rem 1.2rem 1.2rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  counter-increment: etape;
+}
+.how-steps li::before {
+  content: counter(etape);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin-bottom: 0.35rem;
+  border-radius: 50%;
+  background: #f2c200;
+  color: #12141a;
+  font-family: var(--font-display);
+  font-weight: 800;
+}
+.how-steps strong {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+.how-steps span {
+  color: var(--ink-2);
 }
 .quiz-cta-text {
   display: grid;

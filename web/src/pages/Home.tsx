@@ -1,6 +1,6 @@
 import React from "react";
 import * as d3 from "d3";
-import { loadCensures, loadDeputies, useAsync, useCore, type Core } from "../lib/data";
+import { IS_ARTIFACT, loadCensures, loadDeputies, useAsync, useCore, type Core } from "../lib/data";
 import { agree, allQuarters, byField, matrix, quarterEnd, quarterStart, rate, selectIdx, series, type Agreement, type Scope } from "../lib/stats";
 import { fmtInt, fmtMonthYear, fmtPct, fmtDate } from "../lib/format";
 import { href } from "../lib/router";
@@ -10,7 +10,7 @@ import { CensureChart } from "../components/CensureChart";
 import { ScrutinList } from "../components/ScrutinList";
 import { famColor } from "../lib/theme";
 import { groupeAuHasard } from "../lib/hasard";
-import { VideoPresentation } from "../components/Video";
+import { FILM, IconeLecture, VideoPresentation } from "../components/Video";
 import { ErrorBox, FamChip, HowTo, Loading, ScopeBar, Segmented, useScope, VoteLegend } from "../components/ui";
 
 export function scopeLabel(core: Core, sc: Scope): string {
@@ -61,47 +61,93 @@ export function Home() {
   const ranked = [...ags].filter((x) => x.ag.total > 0).sort((a, b) => (rate(b.ag) ?? 0) - (rate(a.ag) ?? 0));
   const first = core.s.date[0];
   const last = core.s.date[core.N - 1];
+  // « Voir le film » lance la vidéo de l'accroche ; sur téléphone, elle est sous le texte : on la fait venir à l'écran.
+  const [film, setFilm] = React.useState(false);
+  const filmRef = React.useRef<HTMLDivElement>(null);
+  const voirFilm = () => {
+    setFilm(true);
+    filmRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  };
 
   return (
     <div className="wrap">
-      <section className="hero">
-        <span className="eyebrow">
-          Présidentielle 2027 · outil citoyen et apartisan · Assemblée nationale, {fmtMonthYear(first)} – {fmtMonthYear(last)}
-        </span>
-        <h1>
-          Les promesses, c'est bien.
-          <br />
-          <mark>Les actes</mark>, c'est mieux.
-        </h1>
-        <p className="lead">
-          Avant de voter en 2027, regardez ce que les groupes politiques ont fait. Nous avons rassemblé les <mark>{fmtInt(core.N)} scrutins publics</mark> de
-          l'Assemblée nationale depuis les élections législatives de juin 2022, et la position de chaque groupe à chacun d'eux. Personne ici ne vous dit pour
-          qui voter : vous regardez les actes, vous décidez.
-        </p>
+      {/* L'accroche : la signature, la question, le quiz, puis le film. */}
+      <section className="landing" aria-labelledby="h-accueil">
+        <div className="landing-text">
+          <span className="pastille">Présidentielle 2027</span>
+          {/* Sur téléphone, chaque phrase passe sur deux lignes, jamais un mot seul : « c'est bien. », « c'est mieux. » restent entiers. */}
+          <h1 id="h-accueil">
+            Les promesses, <span className="insecable">c'est bien.</span>
+            <br />
+            <span className="insecable">
+              <mark className="surligne anime">Les actes</mark>,
+            </span>{" "}
+            <span className="insecable">c'est mieux.</span>
+          </h1>
+          <p className="lead">
+            Qui, à l'Assemblée, vote vraiment comme vous&nbsp;? Dites pour ou contre sur 10 vrais votes, et voyez quels groupes ont voté comme vous. Personne
+            ici ne vous dit pour qui voter.
+          </p>
+          <div className="landing-ctas">
+            <a className="btn primary big" href={href({ page: "quiz" })}>
+              Faire le quiz →
+            </a>
+            {!IS_ARTIFACT && (
+              <button type="button" className="btn big" onClick={voirFilm}>
+                <IconeLecture />
+                Voir le film <span className="video-duree">{FILM.duree}</span>
+              </button>
+            )}
+          </div>
+          <ul className="hero-trust" aria-label="Nos engagements">
+            <li>Mêmes règles pour tous les groupes</li>
+            <li>Chaque chiffre mène au scrutin officiel</li>
+            <li>Sans compte, sans publicité, sans pistage</li>
+            <li>
+              <a href={href({ page: "projet", section: "avis" })}>Ouvert à vos corrections et à vos idées</a>
+            </li>
+          </ul>
+        </div>
+        {!IS_ARTIFACT && (
+          <div className="landing-film" ref={filmRef}>
+            <VideoPresentation lancee={film} onLancer={() => setFilm(true)} />
+          </div>
+        )}
+      </section>
+
+      <section className="section how" aria-labelledby="h-how">
+        <div className="section-head">
+          <h2 id="h-how">
+            <mark className="surligne">{fmtInt(core.N)} scrutins publics</mark> de {fmtMonthYear(first)} à {fmtMonthYear(last)}.
+          </h2>
+          <p>Personne n'a le temps de tout lire. Le quiz vous en propose 10 pour commencer, puis 10 de plus pour affiner.</p>
+        </div>
+        <ol className="how-steps">
+          <li>
+            <strong>Vous dites pour ou contre</strong>
+            <span>Sur de vrais textes de l'Assemblée, comme les députés. Le texte voté reste à portée de main.</span>
+          </li>
+          <li>
+            <strong>Vous découvrez le vote réel</strong>
+            <span>Groupe par groupe, avec le résultat officiel et le lien vers le scrutin.</span>
+          </li>
+          <li>
+            <strong>Vous voyez qui vote comme vous</strong>
+            <span>Les groupes les plus proches de vos réponses : une tendance, pas un verdict.</span>
+          </li>
+        </ol>
         <a className="quiz-cta" href={href({ page: "quiz" })}>
           <span className="quiz-cta-text">
             <strong>Et vous, vous auriez voté quoi&nbsp;?</strong>
-            <span>Dites pour ou contre sur 10 vrais textes de l'Assemblée, puis affinez par blocs de 10. Vous découvrez le vote de chaque groupe. Sans compte.</span>
+            <span>10 questions pour commencer, sans compte. Votre profil reste sur votre appareil.</span>
           </span>
           <span className="btn primary big">Faire le quiz →</span>
         </a>
-        <ul className="hero-trust" aria-label="Nos engagements">
-          <li>Mêmes règles pour tous les groupes</li>
-          <li>Chaque chiffre mène au scrutin officiel</li>
-          <li>Sans compte, sans publicité, sans pistage</li>
-          <li>
-            <a href={href({ page: "projet", section: "avis" })}>Ouvert à vos corrections et à vos idées</a>
-          </li>
-        </ul>
       </section>
 
-      <section className="section video-section" aria-labelledby="h-video">
-        <h2 id="h-video" className="sr-only">
-          La présentation en vidéo
-        </h2>
-        <VideoPresentation />
-      </section>
-
+      <div className="section-head explorer-head">
+        <h2 id="h-explorer">Explorer les votes</h2>
+      </div>
       <ScopeBar count={idx.length} showGov />
 
       <section className="section" aria-labelledby="h-ref">

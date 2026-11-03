@@ -208,7 +208,11 @@ function Intro({ data, saved, onStart, onResume }: { data: QuizData; saved: Save
       <section className="hero quiz-hero">
         <span className="eyebrow">Le quiz · de vrais votes de l'Assemblée nationale</span>
         <h1>
-          Les promesses, c'est bien. <mark>Les actes</mark>, c'est mieux.
+          Les promesses, <span className="insecable">c'est bien.</span>{" "}
+          <span className="insecable">
+            <mark className="surligne anime">Les actes</mark>,
+          </span>{" "}
+          <span className="insecable">c'est mieux.</span>
         </h1>
         <p className="lead">
           Dites pour ou contre, comme les députés, sur {Math.min(BLOCK, pool || total)} textes réellement soumis à l'Assemblée depuis 2022. Après chaque réponse,

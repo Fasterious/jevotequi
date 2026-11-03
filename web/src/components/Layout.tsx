@@ -3,9 +3,11 @@ import { IS_ARTIFACT, useCore } from "../lib/data";
 import { fmtDate, fmtInt } from "../lib/format";
 import { href, type Route } from "../lib/router";
 
-export function BrandMark({ size = 30 }: { size?: number }) {
+export function BrandMark({ size = 34 }: { size?: number }) {
   // Hémicycle stylisé : trois rangées de sièges, un siège jaune, plus gros pour se lire même en petit (même dessin que
-  // le logo des vidéos).
+  // le logo des vidéos). Le siège : 1,8 fois les autres, jamais moins de 3,4 px de rayon à l'écran, comme dans le coin
+  // des films, pour que le jaune ressorte.
+  const siege = Math.max(1.55 * 1.8, (3.4 * 32) / size);
   const dots: { x: number; y: number; hl?: boolean }[] = [];
   [7, 11, 15].forEach((r, ri) => {
     const n = 4 + ri * 2;
@@ -15,9 +17,9 @@ export function BrandMark({ size = 30 }: { size?: number }) {
     }
   });
   return (
-    <svg width={size} height={(size * 18) / 32} viewBox="0 0 32 18" aria-hidden="true">
+    <svg width={size} height={(size * 18) / 32} viewBox="0 0 32 18" aria-hidden="true" style={{ overflow: "visible" }}>
       {dots.map((d, k) => (
-        <circle key={k} cx={d.x} cy={d.y} r={d.hl ? 2.8 : 1.55} style={{ fill: d.hl ? "#f2c200" : "var(--ink)" }} />
+        <circle key={k} cx={d.x} cy={d.y} r={d.hl ? siege : 1.55} style={{ fill: d.hl ? "#f2c200" : "var(--ink)" }} />
       ))}
     </svg>
   );
