@@ -21,7 +21,7 @@ Les demandes du porteur du projet et les idées retenues, classées par moment d
 ## Fait — mise en ligne (3 novembre 2026)
 
 - **Nom définitif : « Je vote qui ? »**, code sous **AGPL-3.0** (une copie modifiée mise en ligne doit publier son code), période conservée : depuis juillet 2022.
-- **Dépôt public** sur GitHub et **site en ligne** sur Vercel (https://jevotequi.vercel.app), mis à jour à chaque envoi et chaque nuit ; documents récupérés un par un gardés en cache dans la mise à jour nocturne.
+- **Dépôt public** sur GitHub et **site en ligne** sur https://jevotequi.fr (hébergé par Vercel), mis à jour à chaque envoi et chaque nuit ; documents récupérés un par un gardés en cache dans la mise à jour nocturne.
 - **Avis des visiteurs** : dépôt privé `jevotequi-avis`, étiquettes créées, variable `AVIS_REPO` réglée ; reste le jeton (voir REPRISE.md).
 - **Routines** : revue assistée des propositions chaque samedi (avis rédigé, aucune action sur GitHub, le mainteneur décide) ; synthèse hebdomadaire des avis dans le dépôt privé.
 - **Neutralité renforcée** : groupe de référence et comparaisons par défaut tirés au hasard (plus de « Renaissance par défaut ») ; libellés des familles sans nom de personne ; vouvoiement partout ; règle de position d'un groupe énoncée exactement dans le quiz.
@@ -31,7 +31,7 @@ Les demandes du porteur du projet et les idées retenues, classées par moment d
 ## Prochaines étapes
 
 - **Relecture des 37 questions du quiz** par un comité éditorial pluraliste (statut « proposé » → « relu »), avant toute diffusion large, puis élargissement à 60–80 questions pour varier les tirages.
-- **Adresse jevotequi.fr** : domaine à acheter, déjà rattaché au projet Vercel.
+- **Adresse jevotequi.fr** : domaine chez OVH depuis le 4 novembre 2026, zone DNS pointée vers Vercel (www redirige vers jevotequi.fr).
 - **Réception des avis** : créer le jeton GitHub et le renseigner dans Vercel.
 - **Quiz par blocs de 10** avec indicateur de solidité du classement (en cours, méthode 1.2.0).
 - **Formats courts** pour les réseaux : teaser vertical sans voix, un vote et ses onze groupes par semaine pendant la campagne.

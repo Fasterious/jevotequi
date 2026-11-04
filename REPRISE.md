@@ -1,6 +1,6 @@
 # Reprendre le projet
 
-État au 3 novembre 2026 : **« Je vote qui ? » est en ligne** sur https://jevotequi.vercel.app (adresse définitive jevotequi.fr dès l'achat du domaine), code public sur https://github.com/Fasterious/jevotequi.
+État au 4 novembre 2026 : **« Je vote qui ? » est en ligne** sur https://jevotequi.fr (domaine chez OVH, site hébergé par Vercel ; https://jevotequi.vercel.app reste l'adresse technique), code public sur https://github.com/Fasterious/jevotequi.
 
 ## Ce qui est fait
 
@@ -42,9 +42,7 @@ python3 -I pipeline/run.py all
 
 | # | Tâche | Qui |
 |---|---|---|
-| 1 | Acheter le domaine jevotequi.fr, puis ajouter dans sa zone DNS : `A @ 216.198.79.1`, `A @ 64.29.17.1`, `CNAME www dfaf26dfd310ff37.vercel-dns-017.com.` (et retirer les autres A/AAAA de `@` et `www`) | le porteur pour l'achat ; la configuration ensuite |
-| 2 | Créer le jeton GitHub des avis (accès fin, dépôt `jevotequi-avis` seulement, permission « Issues : Read and write ») et le renseigner dans Vercel sous `AVIS_GITHUB_TOKEN`, puis redéployer | le porteur |
-| 3 | Faire relire les 37 questions du quiz par un comité pluraliste (statut « proposé » → « relu »), au minimum les trois montrées dans la vidéo (squat, gel des pensions, parité dans les petites communes), avant toute diffusion large | le porteur ou un comité |
-| 4 | Mettre à jour l'aperçu des liens partagés (`og:image` dans `web/index.html`) vers jevotequi.fr une fois le domaine actif | après l'achat du domaine |
+| 1 | Créer le jeton GitHub des avis (accès fin, dépôt `jevotequi-avis` seulement, permission « Issues : Read and write ») et le renseigner dans Vercel sous `AVIS_GITHUB_TOKEN`, puis redéployer | le porteur |
+| 2 | Faire relire les 37 questions du quiz par un comité pluraliste (statut « proposé » → « relu »), au minimum les trois montrées dans la vidéo (Mayotte, gel des pensions, parité dans les petites communes), avant toute diffusion large | le porteur ou un comité |
 
 Pour reprendre le projet : lire `REPRISE.md`, `ROADMAP.md` et `METHODOLOGIE.md`.
