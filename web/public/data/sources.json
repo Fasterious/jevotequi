@@ -3,40 +3,40 @@
   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
   "size": 13721016,
   "sha256": "41561aa52d8f46176abaad1745301b79d3d5303378080776417e658174b65e94",
-  "last_modified": null,
-  "fetched_at": null,
+  "last_modified": "Tue, 03 Nov 2026 01:34:28 GMT",
+  "fetched_at": "2026-11-04T13:02:31+00:00",
   "unavailable": null
  },
  "scrutins16": {
   "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/scrutins/Scrutins.json.zip",
   "size": 10107912,
   "sha256": "adc5e57d3ad5904fd11e176b531b3d525d4ecfdf78db9587f93a14452601126b",
-  "last_modified": null,
-  "fetched_at": null,
+  "last_modified": "Fri, 28 Jun 2024 10:22:27 GMT",
+  "fetched_at": "2026-11-04T13:03:00+00:00",
   "unavailable": null
  },
  "scrutins17": {
   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/scrutins/Scrutins.json.zip",
   "size": 29637633,
-  "sha256": "8277050b47ab9840220b41e687de8fb6a3cf415cb7b0814ef0623169c99dbae3",
-  "last_modified": null,
-  "fetched_at": null,
+  "sha256": "929db614c5fde306af7177fe14642a4011d84e55f3cc08a40ccde1530dfa773d",
+  "last_modified": "Tue, 03 Nov 2026 11:26:44 GMT",
+  "fetched_at": "2026-11-04T13:03:04+00:00",
   "unavailable": null
  },
  "dossiers16": {
   "url": "https://data.assemblee-nationale.fr/static/openData/repository/16/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
   "size": 9085119,
   "sha256": "6a2369c01a44711362b7c9a79ed13c001400cbb00dc6bade7b05499d2e6d478e",
-  "last_modified": null,
-  "fetched_at": null,
+  "last_modified": "Fri, 28 Jun 2024 10:16:19 GMT",
+  "fetched_at": "2026-11-04T13:03:49+00:00",
   "unavailable": null
  },
  "dossiers17": {
   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/dossiers_legislatifs/Dossiers_Legislatifs.json.zip",
-  "size": 11134052,
-  "sha256": "8b1096cedea3e2544f39794c93bc369b1b289a247e13336983832808303f2f0e",
-  "last_modified": "Tue, 03 Nov 2026 07:16:32 GMT",
-  "fetched_at": "2026-11-03T13:02:38+00:00",
+  "size": 11134377,
+  "sha256": "7c36e5e59561359256dff4d599032150f1698556daab05ee03b020e51c610899",
+  "last_modified": "Tue, 03 Nov 2026 14:16:29 GMT",
+  "fetched_at": "2026-11-04T13:04:12+00:00",
   "unavailable": null
  },
  "amendements16": {
@@ -49,10 +49,10 @@
  },
  "amendements17": {
   "url": "https://data.assemblee-nationale.fr/static/openData/repository/17/loi/amendements_div_legis/Amendements.json.zip",
-  "size": 351879916,
-  "sha256": "319926d380f3f257370cf0dd4412931fd1b407b46693e64dc521911e9a863099",
-  "last_modified": "Tue, 03 Nov 2026 09:22:07 GMT",
-  "fetched_at": "2026-11-03T12:57:47+00:00",
+  "size": 351881121,
+  "sha256": "9643f27e26aa74cdcb41b3f541bd00f3cba1df6f4fc9518eeb02e1bf7d73d5ef",
+  "last_modified": "Tue, 03 Nov 2026 15:20:58 GMT",
+  "fetched_at": "2026-11-04T13:19:49+00:00",
   "unavailable": null
  }
 }

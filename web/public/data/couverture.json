@@ -9,9 +9,9 @@
    "n_numeros_manquants": 0,
    "scrutins_avec_dossier": 4067,
    "scrutins_amendement": 3173,
-   "amendements_retrouves": 3147,
+   "amendements_retrouves": 3146,
    "amendements_par_source": {
-    "document": 3147
+    "document": 3146
    }
   },
   {
@@ -42,7 +42,7 @@
    "scrutins": 2393,
    "solennels": 36,
    "amendements": 1832,
-   "amendements_retrouves": 1822
+   "amendements_retrouves": 1821
   },
   {
    "annee": "2024",

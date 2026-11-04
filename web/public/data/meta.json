@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-03T13:37:48Z",
+ "generated": "2026-11-04T13:40:08Z",
  "methodVersion": "1.2.0",
  "sources": {
   "amo30": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
@@ -590,6 +590,6 @@
   "scrutins": 13683,
   "deputies": 836,
   "texts": 517,
-  "amendments": 11385
+  "amendments": 11384
  }
 }
