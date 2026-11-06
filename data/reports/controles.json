@@ -15,7 +15,7 @@
   "statut": "ok",
   "valeur": 0,
   "attendu": 0,
-  "detail": "2021657 votes nominatifs"
+  "detail": "2050534 votes nominatifs"
  },
  {
   "id": "E3",
@@ -76,18 +76,18 @@
   "etape": "rapprochement",
   "titre": "Contenu des amendements retrouvé (16e législature)",
   "statut": "ok",
-  "valeur": "99.1%",
+  "valeur": "99.2%",
   "attendu": "≥ 90 %",
-  "detail": "3146 sur 3173 scrutins d'amendement"
+  "detail": "3147 sur 3173 scrutins d'amendement"
  },
  {
   "id": "L2-17",
   "etape": "rapprochement",
   "titre": "Contenu des amendements retrouvé (17e législature)",
   "statut": "ok",
-  "valeur": "99.7%",
+  "valeur": "97.6%",
   "attendu": "≥ 90 %",
-  "detail": "8238 sur 8263 scrutins d'amendement"
+  "detail": "8239 sur 8439 scrutins d'amendement"
  },
  {
   "id": "L3",
@@ -123,7 +123,7 @@
   "statut": "ok",
   "valeur": 0,
   "attendu": 0,
-  "detail": "corrections appliquées — amendement retrouvé grâce aux autres scrutins du même texte : 1; dossier remplacé : 4; dossier retiré : 3; amendement d'un autre texte (même séance, même numéro) : 3"
+  "detail": "corrections appliquées — amendement retrouvé grâce aux autres scrutins du même texte : 1; dossier remplacé : 4; dossier retiré : 3; amendement d'un autre texte (même séance, même numéro) : 4"
  },
  {
   "id": "L7",
@@ -141,7 +141,7 @@
   "statut": "ok",
   "valeur": "0.19%",
   "attendu": "≤ 0,5 %",
-  "detail": "10916 confirmés sur 10937 ; écarts connus : l'intitulé cite parfois le député qui a défendu l'amendement plutôt que son premier signataire (numéro, séance, texte et sort concordent) — VTANR5L16V58, VTANR5L16V473, VTANR5L16V1058, VTANR5L16V1067, VTANR5L16V1072, VTANR5L16V1077"
+  "detail": "10917 confirmés sur 10938 ; écarts connus : l'intitulé cite parfois le député qui a défendu l'amendement plutôt que son premier signataire (numéro, séance, texte et sort concordent) — VTANR5L16V58, VTANR5L16V473, VTANR5L16V1058, VTANR5L16V1067, VTANR5L16V1072, VTANR5L16V1077"
  },
  {
   "id": "K1",
@@ -166,7 +166,7 @@
   "etape": "calcul",
   "titre": "Écart entre nos positions recalculées et le champ « position majoritaire » publié",
   "statut": "alerte",
-  "valeur": 3216,
+  "valeur": 3300,
   "attendu": "",
   "detail": "Le champ publié n'est pas utilisé : il vaut « pour » par défaut et contredit parfois les décomptes."
  },

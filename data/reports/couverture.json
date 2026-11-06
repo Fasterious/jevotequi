@@ -9,23 +9,24 @@
    "n_numeros_manquants": 0,
    "scrutins_avec_dossier": 4067,
    "scrutins_amendement": 3173,
-   "amendements_retrouves": 3146,
+   "amendements_retrouves": 3147,
    "amendements_par_source": {
-    "document": 3146
+    "document": 3147
    }
   },
   {
    "legislature": 17,
    "premier": "2024-10-08",
-   "dernier": "2026-11-02",
-   "scrutins": 9578,
+   "dernier": "2026-11-04",
+   "scrutins": 9759,
    "numeros_manquants": [],
    "n_numeros_manquants": 0,
-   "scrutins_avec_dossier": 9549,
-   "scrutins_amendement": 8263,
-   "amendements_retrouves": 8238,
+   "scrutins_avec_dossier": 9730,
+   "scrutins_amendement": 8439,
+   "amendements_retrouves": 8239,
    "amendements_par_source": {
-    "archive": 8238
+    "archive": 8238,
+    "document": 1
    }
   }
  ],
@@ -42,7 +43,7 @@
    "scrutins": 2393,
    "solennels": 36,
    "amendements": 1832,
-   "amendements_retrouves": 1821
+   "amendements_retrouves": 1822
   },
   {
    "annee": "2024",
@@ -60,10 +61,10 @@
   },
   {
    "annee": "2026",
-   "scrutins": 4631,
-   "solennels": 47,
-   "amendements": 4025,
-   "amendements_retrouves": 4013
+   "scrutins": 4812,
+   "solennels": 48,
+   "amendements": 4201,
+   "amendements_retrouves": 4014
   }
  ]
 }
