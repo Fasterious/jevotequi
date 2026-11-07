@@ -85,9 +85,9 @@
   "etape": "rapprochement",
   "titre": "Contenu des amendements retrouvé (17e législature)",
   "statut": "ok",
-  "valeur": "97.6%",
+  "valeur": "99.7%",
   "attendu": "≥ 90 %",
-  "detail": "8239 sur 8439 scrutins d'amendement"
+  "detail": "8415 sur 8439 scrutins d'amendement"
  },
  {
   "id": "L3",
@@ -141,7 +141,7 @@
   "statut": "ok",
   "valeur": "0.19%",
   "attendu": "≤ 0,5 %",
-  "detail": "10917 confirmés sur 10938 ; écarts connus : l'intitulé cite parfois le député qui a défendu l'amendement plutôt que son premier signataire (numéro, séance, texte et sort concordent) — VTANR5L16V58, VTANR5L16V473, VTANR5L16V1058, VTANR5L16V1067, VTANR5L16V1072, VTANR5L16V1077"
+  "detail": "11091 confirmés sur 11112 ; écarts connus : l'intitulé cite parfois le député qui a défendu l'amendement plutôt que son premier signataire (numéro, séance, texte et sort concordent) — VTANR5L16V58, VTANR5L16V473, VTANR5L16V1058, VTANR5L16V1067, VTANR5L16V1072, VTANR5L16V1077"
  },
  {
   "id": "K1",

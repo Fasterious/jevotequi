@@ -23,10 +23,9 @@
    "n_numeros_manquants": 0,
    "scrutins_avec_dossier": 9730,
    "scrutins_amendement": 8439,
-   "amendements_retrouves": 8239,
+   "amendements_retrouves": 8415,
    "amendements_par_source": {
-    "archive": 8238,
-    "document": 1
+    "archive": 8415
    }
   }
  ],
@@ -64,7 +63,7 @@
    "scrutins": 4812,
    "solennels": 48,
    "amendements": 4201,
-   "amendements_retrouves": 4014
+   "amendements_retrouves": 4190
   }
  ]
 }
