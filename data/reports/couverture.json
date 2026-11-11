@@ -17,15 +17,15 @@
   {
    "legislature": 17,
    "premier": "2024-10-08",
-   "dernier": "2026-11-04",
-   "scrutins": 9759,
+   "dernier": "2026-11-10",
+   "scrutins": 9806,
    "numeros_manquants": [],
    "n_numeros_manquants": 0,
-   "scrutins_avec_dossier": 9730,
-   "scrutins_amendement": 8439,
-   "amendements_retrouves": 8415,
+   "scrutins_avec_dossier": 9777,
+   "scrutins_amendement": 8482,
+   "amendements_retrouves": 8458,
    "amendements_par_source": {
-    "archive": 8415
+    "archive": 8458
    }
   }
  ],
@@ -60,10 +60,10 @@
   },
   {
    "annee": "2026",
-   "scrutins": 4812,
+   "scrutins": 4859,
    "solennels": 48,
-   "amendements": 4201,
-   "amendements_retrouves": 4190
+   "amendements": 4244,
+   "amendements_retrouves": 4233
   }
  ]
 }
