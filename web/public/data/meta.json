@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-11T12:50:12Z",
+ "generated": "2026-11-14T12:24:39Z",
  "methodVersion": "1.2.0",
  "sources": {
   "amo30": "https://data.assemblee-nationale.fr/static/openData/repository/17/amo/tous_acteurs_mandats_organes_xi_legislature/AMO30_tous_acteurs_tous_mandats_tous_organes_historique.json.zip",
@@ -32,8 +32,8 @@
   {
    "num": 17,
    "first": "2024-10-08",
-   "last": "2026-11-10",
-   "n": 9806,
+   "last": "2026-11-12",
+   "n": 9895,
    "deputies": 652,
    "chunk": 125,
    "voteChunk": 40,
@@ -44,7 +44,7 @@
      0.096
     ],
     "minVotes": 100,
-    "scrutins": 9344
+    "scrutins": 9431
    }
   }
  ],
@@ -587,9 +587,9 @@
   }
  ],
  "counts": {
-  "scrutins": 13911,
+  "scrutins": 14000,
   "deputies": 836,
-  "texts": 518,
-  "amendments": 11605
+  "texts": 519,
+  "amendments": 11687
  }
 }
